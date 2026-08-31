@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AdminPhotoField, FieldLabel } from "@/components/admin/admin-shell";
@@ -23,11 +24,42 @@ export function ProductPhotosEditor({
   onChange,
   onUploaded,
 }: ProductPhotosEditorProps) {
+  const addInputRef = useRef<HTMLInputElement>(null);
+  const [adding, setAdding] = useState(false);
+  const [addError, setAddError] = useState("");
+
   function addPhoto() {
-    const nextImage =
-      library.find((image) => !photos.includes(image)) ?? library[0] ?? photos[0];
-    if (!nextImage) return;
-    onChange([...photos, nextImage]);
+    const nextImage = library.find((image) => !photos.includes(image));
+    if (nextImage) {
+      onChange([...photos, nextImage]);
+      return;
+    }
+
+    addInputRef.current?.click();
+  }
+
+  async function uploadAndAppend(file: File) {
+    setAddError("");
+    setAdding(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/admin/upload", { method: "POST", body: formData });
+      const body = (await response.json()) as { url?: string; error?: string };
+
+      if (!response.ok || !body.url) {
+        throw new Error(body.error || "Upload failed");
+      }
+
+      onUploaded(body.url);
+      onChange([...photos, body.url]);
+    } catch (error) {
+      setAddError(error instanceof Error ? error.message : "Upload failed");
+    } finally {
+      setAdding(false);
+    }
   }
 
   function updatePhoto(index: number, url: string) {
@@ -58,11 +90,31 @@ export function ProductPhotosEditor({
   return (
     <div className="mt-4 border-t border-white/10 pt-4">
       <div className="mb-2 flex items-center justify-between gap-2">
-        <FieldLabel>Photos</FieldLabel>
-        <Button type="button" variant="dark" size="sm" onClick={addPhoto}>
-          + Add
+        <FieldLabel>Photos ({photos.length})</FieldLabel>
+        <Button
+          type="button"
+          variant="dark"
+          size="sm"
+          disabled={adding}
+          onClick={addPhoto}
+        >
+          {adding ? "Uploading..." : "+ Add photo"}
         </Button>
       </div>
+
+      {addError ? <p className="mb-2 text-xs text-red-400">{addError}</p> : null}
+
+      <input
+        ref={addInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(event) => {
+          const file = event.target.files?.[0];
+          if (file) void uploadAndAppend(file);
+          event.target.value = "";
+        }}
+      />
 
       <div className="divide-y divide-white/10 rounded-md border border-white/10">
         {photos.map((photo, index) => {
@@ -70,7 +122,7 @@ export function ProductPhotosEditor({
 
           return (
             <div
-              key={`${photo}-${index}`}
+              key={`photo-${index}-${photo}`}
               className={cn("flex flex-wrap items-center gap-2 p-2", isMain && "bg-rax-ember/5")}
             >
               <span

@@ -84,14 +84,24 @@ export function ProductDetail({
               )}
             </div>
             {gallery.length > 1 ? (
-              <div className="mt-3 grid grid-cols-2 gap-3">
+              <div
+                className={cn(
+                  "mt-3 gap-2",
+                  gallery.length > 2
+                    ? "flex overflow-x-auto pb-1"
+                    : "grid grid-cols-2 gap-3"
+                )}
+              >
                 {gallery.map((src, i) => (
                   <button
-                    key={src}
+                    key={`${src}-${i}`}
                     type="button"
                     onClick={() => setActive(i)}
                     className={cn(
-                      "relative aspect-[4/3] overflow-hidden bg-[#ece7df]",
+                      "relative overflow-hidden bg-[#ece7df]",
+                      gallery.length > 2
+                        ? "h-20 w-20 shrink-0"
+                        : "aspect-[4/3]",
                       active === i ? "ring-2 ring-rax-ember" : "opacity-70 hover:opacity-100"
                     )}
                   >

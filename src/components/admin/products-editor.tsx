@@ -72,8 +72,8 @@ export function ProductsAdminPage() {
   return (
     <AdminShell title="Products">
       <p className="mb-6 text-sm text-white/60">
-        Edit price, stock, description, and photos. First photo is the main image. Click Save
-        Changes when done.
+        Edit price, stock, description, and photos. Add as many product photos as you need — first
+        photo is the main image. Click Save Changes when done.
       </p>
 
       <div className="space-y-6">
@@ -162,7 +162,13 @@ export function ProductsAdminPage() {
               <ProductPhotosEditor
                 photos={photos}
                 library={productImages}
-                onChange={(nextPhotos) => updateProduct(index, { images: nextPhotos })}
+                onChange={(nextPhotos) => {
+                  const positions = product.imagePosition ?? [];
+                  updateProduct(index, {
+                    images: nextPhotos,
+                    imagePosition: nextPhotos.map((_, photoIndex) => positions[photoIndex] ?? "50% 46%"),
+                  });
+                }}
                 onUploaded={addToLibrary}
               />
             </AdminPanel>
