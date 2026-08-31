@@ -1,0 +1,73 @@
+import type { Review } from "@/types";
+
+const img = (file: string) => `/images/${file}`;
+const portfolio = (file: string) => `/images/portfolio/${file}`;
+
+export const reviews: Review[] = [
+  {
+    id: "r1",
+    name: "Marcus Hale",
+    location: "Boise, ID",
+    rating: 5,
+    title: "Brisket juices stay in the tray",
+    body: "I sliced a 14-pound brisket and every drop went through the board into the drip tray. Counters stayed clean. This is the board I should’ve bought years ago.",
+    product: "RAX Original Drip Board — Maple",
+    image: portfolio("brisket-service.jpg"),
+    date: "Aug 2026",
+  },
+  {
+    id: "r2",
+    name: "Elena Voss",
+    location: "Austin, TX",
+    rating: 5,
+    title: "Steak night without the mess",
+    body: "Resting steaks used to mean a puddle on the counter. The removable tray catches everything. Guests notice the bull stamp before dinner hits the table.",
+    product: "RAX Original Drip Board — Bamboo",
+    image: portfolio("steak-rest.jpg"),
+    date: "Aug 2026",
+  },
+  {
+    id: "r3",
+    name: "Jonah Pratt",
+    location: "Spokane, WA",
+    rating: 5,
+    title: "Built for wild game",
+    body: "Processing deer used to wreck my old boards. The drainage system and heavy 2-inch build handle it. Slide the tray, rinse, done.",
+    product: "RAX Original Drip Board — Maple",
+    image: portfolio("smokehouse-cut.jpg"),
+    date: "Jul 2026",
+  },
+  {
+    id: "r4",
+    name: "Priya Nandakumar",
+    location: "Denver, CO",
+    rating: 5,
+    title: "Thanksgiving turkey, zero overflow",
+    body: "Carved the bird on the Original Drip Board. Juice groove would’ve overflowed — the tray never did. Already telling the family.",
+    product: "RAX Original Drip Board — Bamboo",
+    image: portfolio("juice-groove.jpg"),
+    date: "Jul 2026",
+  },
+  {
+    id: "r5",
+    name: "Cole Brennan",
+    location: "Nashville, TN",
+    rating: 5,
+    title: "Smoker-side workhorse",
+    body: "Lives next to the offset. Drain and tray caught every drop from a long cook. Hardwood hides the scars the way it should.",
+    product: "RAX Original Drip Board — Maple",
+    image: portfolio("drip-tray.jpg"),
+    date: "Jun 2026",
+  },
+  {
+    id: "r6",
+    name: "Hannah Ruiz",
+    location: "Portland, OR",
+    rating: 5,
+    title: "Bamboo launch pick",
+    body: "Grabbed the bamboo at $99.99 for the launch. Same drip system as maple, lighter price, still feels like a serious tool.",
+    product: "RAX Original Drip Board — Bamboo",
+    image: portfolio("carving-line.jpg"),
+    date: "Jun 2026",
+  },
+];

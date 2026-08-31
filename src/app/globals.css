@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+:root {
+  --rax-black: #111111;
+  --rax-charcoal: #1c1c1c;
+  --rax-steel: #2a2a2a;
+  --rax-iron: #3a3a3a;
+  --rax-cream: #f5f5f7;
+  --rax-paper: #ffffff;
+  --rax-ink: #161616;
+  --rax-muted: #6b6b6b;
+  --rax-muted-dark: #a8a29e;
+  --rax-wood: #c9a66b;
+  --rax-ember: #f15a22;
+  --rax-ember-dark: #d94b18;
+}
+
+@theme inline {
+  --color-rax-black: var(--rax-black);
+  --color-rax-charcoal: var(--rax-charcoal);
+  --color-rax-steel: var(--rax-steel);
+  --color-rax-iron: var(--rax-iron);
+  --color-rax-cream: var(--rax-cream);
+  --color-rax-paper: var(--rax-paper);
+  --color-rax-ink: var(--rax-ink);
+  --color-rax-muted: var(--rax-muted);
+  --color-rax-muted-dark: var(--rax-muted-dark);
+  --color-rax-wood: var(--rax-wood);
+  --color-rax-ember: var(--rax-ember);
+  --color-rax-ember-dark: var(--rax-ember-dark);
+  --font-sans: var(--font-barlow);
+  --font-display: var(--font-oswald);
+  --font-serif: var(--font-cormorant);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--rax-paper);
+  color: var(--rax-ink);
+  font-family: var(--font-barlow), system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--rax-ember);
+  color: #fff;
+}
+
+.font-display {
+  font-family: var(--font-oswald), Impact, sans-serif;
+}
+
+.font-serif {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+.section-kicker {
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--rax-ember);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-fade-up {
+    animation: hero-fade-up 0.65s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-delay-1 {
+    animation-delay: 0.12s;
+  }
+
+  .hero-delay-2 {
+    animation-delay: 0.24s;
+  }
+
+  .hero-delay-3 {
+    animation-delay: 0.36s;
+  }
+
+  .reveal-on-scroll {
+    animation: reveal-up 0.65s ease both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 28%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade-up,
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+  }
+}

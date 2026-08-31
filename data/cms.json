@@ -1,0 +1,427 @@
+{
+  "version": 1,
+  "updatedAt": "2026-08-28T02:00:00.000Z",
+  "site": {
+    "announcement": {
+      "line1": "FREE SHIPPING ON ORDERS OVER $150",
+      "line2": "BUILT FOR GENERATIONS",
+      "ctaText": "Shop Now",
+      "ctaHref": "/shop"
+    },
+    "hero": {
+      "kicker": "American Hardwood · Integrated Drip Tray",
+      "headline": "Crafted for\nthe Cut.",
+      "subheadline": "The RAX Original Drip Board — integrated drainage and a removable drip tray for steaks, brisket, BBQ, and wild game.",
+      "image": "/images/portfolio/steak-rest.jpg",
+      "imagePosition": "62% 42%",
+      "primaryCta": {
+        "text": "Shop Original Drip Board",
+        "href": "/shop"
+      },
+      "secondaryCta": {
+        "text": "Our Story",
+        "href": "/our-story"
+      }
+    },
+    "collectionBar": {
+      "left": {
+        "text": "Boards In-Stock",
+        "href": "/shop"
+      },
+      "right": {
+        "text": "View Portfolio",
+        "href": "/portfolio"
+      }
+    },
+    "featuredSection": {
+      "kicker": "The Line",
+      "headline": "Original Drip Board",
+      "linkText": "View Full Shop →",
+      "linkHref": "/shop"
+    },
+    "trustBadges": [
+      {
+        "id": "drainage",
+        "title": "Integrated Drainage System",
+        "copy": "Juices flow through the board into a removable drip tray — not onto your counters."
+      },
+      {
+        "id": "build",
+        "title": "Heavy-Duty 2\" Build",
+        "copy": "16\" × 20\" cutting surface built for steaks, brisket, BBQ, and wild game."
+      },
+      {
+        "id": "wood",
+        "title": "Bamboo or Maple",
+        "copy": "Launch options from $99.99 bamboo to $180 maple — same drip system either way."
+      },
+      {
+        "id": "guarantee",
+        "title": "Lifetime Guarantee",
+        "copy": "If we built it, we stand behind it. Period."
+      }
+    ],
+    "featureSections": [
+      {
+        "id": "difference",
+        "kicker": "The Difference",
+        "headline": "Built for People Who Take Meat Seriously",
+        "body": "Unlike traditional boards that rely on shallow juice grooves, the RAX Original Drip Board directs meat juices through the board and into a removable drip tray underneath — so steaks, brisket, turkey, and wild game stay on the board, not your counters.",
+        "image": "/images/portfolio/drip-tray.jpg",
+        "imagePosition": "38% 50%",
+        "variant": "charcoal",
+        "imageSide": "left",
+        "bullets": [
+          "Integrated drainage system",
+          "Removable internal drip tray",
+          "16\" × 20\" × 2\" cutting surface"
+        ],
+        "cta": {
+          "text": "Shop the Original Drip Board",
+          "href": "/shop"
+        }
+      },
+      {
+        "id": "mark",
+        "kicker": "The Mark",
+        "headline": "Laser Precision & Custom Branding",
+        "body": "Every RAX board leaves with a laser-true edge and the steer mark burned into the grain. Bamboo or maple — same drainage system, same RAX Cut Co. stamp.",
+        "image": "/images/portfolio/laser-mark.jpg",
+        "imagePosition": "55% 55%",
+        "variant": "black",
+        "imageSide": "right",
+        "quote": "If the grain isn't honest, we don't stamp it.",
+        "cta": {
+          "text": "Read the mill story",
+          "href": "/our-story"
+        }
+      },
+      {
+        "id": "cleanup",
+        "kicker": "Cleanup",
+        "headline": "Slide Out. Wipe Clean. Done.",
+        "body": "When you're finished resting or carving, slide out the drip tray, empty it, and wash. No overflowing grooves. No soaked towels. No sticky counters.",
+        "image": "/images/portfolio/steak-rest.jpg",
+        "imagePosition": "50% 42%",
+        "variant": "ember",
+        "imageSide": "left",
+        "cta": {
+          "text": "Shop Maple — $180",
+          "href": "/shop/rax-original-drip-board-maple"
+        }
+      }
+    ],
+    "shopPage": {
+      "kicker": "The Shop",
+      "headline": "Original Drip Board",
+      "description": "16\" × 20\" × 2\". Integrated drainage. Removable drip tray. Bamboo from $99.99 · Maple $180. Launch inventory: 1,000 units."
+    },
+    "portfolio": {
+      "page": {
+        "kicker": "The Work",
+        "headline": "Boards in Action",
+        "description": "Steaks, brisket, wild game, and everyday carving — the RAX Original Drip Board in real kitchens, with the drainage system, laser mark, and hardwood finish on full display."
+      },
+      "homeKicker": "In the Wild",
+      "homeHeadline": "Built for the Cut",
+      "homeDescription": "A look at the board doing what it was built for — containing the mess, showing the mark, and holding up to serious work.",
+      "homeLinkText": "View Full Portfolio →",
+      "homeLinkHref": "/portfolio",
+      "featuredIds": [
+        "brisket-service",
+        "drip-tray",
+        "steak-rest",
+        "laser-mark",
+        "carving-line",
+        "juice-groove"
+      ],
+      "items": [
+        {
+          "id": "brisket-service",
+          "title": "Brisket Service",
+          "category": "In Action",
+          "image": "/images/portfolio/brisket-service.jpg",
+          "imagePosition": "50% 45%"
+        },
+        {
+          "id": "juice-groove",
+          "title": "Juice Groove",
+          "category": "In Action",
+          "image": "/images/portfolio/juice-groove.jpg",
+          "imagePosition": "50% 50%"
+        },
+        {
+          "id": "drip-tray",
+          "title": "Drip Tray Extended",
+          "category": "In Action",
+          "image": "/images/portfolio/drip-tray.jpg",
+          "imagePosition": "35% 50%"
+        },
+        {
+          "id": "steak-rest",
+          "title": "Steak Rest",
+          "category": "In Action",
+          "image": "/images/portfolio/steak-rest.jpg",
+          "imagePosition": "50% 45%"
+        },
+        {
+          "id": "carving-line",
+          "title": "Carving Line",
+          "category": "In Action",
+          "image": "/images/portfolio/carving-line.jpg",
+          "imagePosition": "50% 45%"
+        },
+        {
+          "id": "smokehouse-cut",
+          "title": "Smokehouse Cut",
+          "category": "In Action",
+          "image": "/images/portfolio/smokehouse-cut.jpg",
+          "imagePosition": "50% 45%"
+        },
+        {
+          "id": "laser-mark",
+          "title": "Laser Mark",
+          "category": "The Mark",
+          "image": "/images/portfolio/laser-mark.jpg",
+          "imagePosition": "50% 50%"
+        },
+        {
+          "id": "bench-setup",
+          "title": "Bench Setup",
+          "category": "The Mark",
+          "image": "/images/portfolio/bench-setup.jpg",
+          "imagePosition": "50% 45%"
+        },
+        {
+          "id": "edge-detail",
+          "title": "Edge Detail",
+          "category": "Craft & Detail",
+          "image": "/images/portfolio/edge-detail.jpg",
+          "imagePosition": "50% 50%"
+        },
+        {
+          "id": "grain-finish",
+          "title": "Grain & Finish",
+          "category": "Craft & Detail",
+          "image": "/images/portfolio/grain-finish.jpg",
+          "imagePosition": "50% 50%"
+        },
+        {
+          "id": "corner-groove",
+          "title": "Corner Groove",
+          "category": "Craft & Detail",
+          "image": "/images/portfolio/corner-groove.jpg",
+          "imagePosition": "50% 50%"
+        },
+        {
+          "id": "mill-shot",
+          "title": "At the Mill",
+          "category": "Craft & Detail",
+          "image": "/images/portfolio/mill-shot.jpg",
+          "imagePosition": "50% 45%"
+        }
+      ]
+    },
+    "nav": {
+      "links": [
+        { "href": "/shop", "label": "Shop Boards" },
+        { "href": "/portfolio", "label": "Portfolio" },
+        { "href": "/our-story", "label": "Inside RAX" },
+        { "href": "/care", "label": "Care" },
+        { "href": "/guarantee", "label": "Guarantee" }
+      ]
+    },
+    "footer": {
+      "tagline": "Handcrafted American hardwood. Precision-milled, finished by hand, built to take a lifetime of honest kitchen work.",
+      "locationLine": "Est. 2026 · Washington, USA",
+      "newsletterHeadline": "Join the RAX Crew",
+      "newsletterDescription": "Exclusive drops, mill notes, and first crack at limited boards.",
+      "newsletterSuccess": "You're on the list. Check your inbox.",
+      "employeeLoginLabel": "Employee Login",
+      "employeeLoginHref": "/admin",
+      "social": {
+        "instagram": "",
+        "facebook": "",
+        "youtube": ""
+      }
+    },
+    "reviews": {
+      "kicker": "From the Crew",
+      "headline": "In the Kitchen",
+      "items": [
+        {
+          "id": "r1",
+          "name": "Marcus Hale",
+          "location": "Boise, ID",
+          "rating": 5,
+          "title": "Brisket juices stay in the tray",
+          "body": "I sliced a 14-pound brisket and every drop went through the board into the drip tray. Counters stayed clean. This is the board I should've bought years ago.",
+          "product": "RAX Original Drip Board — Maple",
+          "image": "/images/portfolio/brisket-service.jpg",
+          "date": "Aug 2026"
+        },
+        {
+          "id": "r2",
+          "name": "Elena Voss",
+          "location": "Austin, TX",
+          "rating": 5,
+          "title": "Steak night without the mess",
+          "body": "Resting steaks used to mean a puddle on the counter. The removable tray catches everything. Guests notice the bull stamp before dinner hits the table.",
+          "product": "RAX Original Drip Board — Bamboo",
+          "image": "/images/portfolio/steak-rest.jpg",
+          "date": "Aug 2026"
+        },
+        {
+          "id": "r3",
+          "name": "Jonah Pratt",
+          "location": "Spokane, WA",
+          "rating": 5,
+          "title": "Built for wild game",
+          "body": "Processing deer used to wreck my old boards. The drainage system and heavy 2-inch build handle it. Slide the tray, rinse, done.",
+          "product": "RAX Original Drip Board — Maple",
+          "image": "/images/portfolio/smokehouse-cut.jpg",
+          "date": "Jul 2026"
+        },
+        {
+          "id": "r4",
+          "name": "Priya Nandakumar",
+          "location": "Denver, CO",
+          "rating": 5,
+          "title": "Thanksgiving turkey, zero overflow",
+          "body": "Carved the bird on the Original Drip Board. Juice groove would've overflowed — the tray never did. Already telling the family.",
+          "product": "RAX Original Drip Board — Bamboo",
+          "image": "/images/portfolio/juice-groove.jpg",
+          "date": "Jul 2026"
+        },
+        {
+          "id": "r5",
+          "name": "Cole Brennan",
+          "location": "Nashville, TN",
+          "rating": 5,
+          "title": "Smoker-side workhorse",
+          "body": "Lives next to the offset. Drain and tray caught every drop from a long cook. Hardwood hides the scars the way it should.",
+          "product": "RAX Original Drip Board — Maple",
+          "image": "/images/portfolio/drip-tray.jpg",
+          "date": "Jun 2026"
+        },
+        {
+          "id": "r6",
+          "name": "Hannah Ruiz",
+          "location": "Portland, OR",
+          "rating": 5,
+          "title": "Bamboo launch pick",
+          "body": "Grabbed the bamboo at $99.99 for the launch. Same drip system as maple, lighter price, still feels like a serious tool.",
+          "product": "RAX Original Drip Board — Bamboo",
+          "image": "/images/portfolio/carving-line.jpg",
+          "date": "Jun 2026"
+        }
+      ]
+    },
+    "storeSettings": {
+      "freeShippingThreshold": 150,
+      "standardShippingRate": 18
+    },
+    "emailSettings": {
+      "brandName": "RAX Cut Co.",
+      "footerTagline": "Handcrafted hardwood boards built for the cut.",
+      "locationLine": "Est. 2026 · Washington, USA",
+      "supportMessage": "Questions? Reply to this email and we'll get back to you.",
+      "orderConfirmation": {
+        "subject": "Order confirmed — {{orderNumber}}",
+        "headline": "Order Confirmed",
+        "intro": "{{greeting}} your order is confirmed. We're prepping your board for shipment from Washington.",
+        "closing": "Thanks for supporting American hardwood.",
+        "ctaText": "Shop RAX"
+      },
+      "orderShipped": {
+        "subject": "Your order has shipped — {{orderNumber}}",
+        "headline": "On The Way",
+        "intro": "{{greeting}} your RAX order is on the way.",
+        "trackingFallback": "Your board has shipped. Tracking will follow if available.",
+        "closing": "We hope it earns a permanent spot in your kitchen.",
+        "ctaText": "Shop RAX"
+      },
+      "newsletterWelcome": {
+        "subject": "Welcome to the RAX Crew",
+        "headline": "You're In",
+        "intro": "You're on the RAX Crew list. We'll send drops, mill notes, and first crack at limited boards.",
+        "closing": "Built for people who take meat seriously.",
+        "ctaText": "Shop Boards"
+      }
+    }
+  },
+  "products": [
+    {
+      "id": "rax-original-drip-bamboo",
+      "slug": "rax-original-drip-board-bamboo",
+      "name": "RAX Original Drip Board",
+      "tagline": "Bamboo · Integrated drip tray.",
+      "description": "The RAX Original Drip Board is built for people who take meat seriously. Unlike traditional cutting boards that rely on shallow juice grooves, the RAX features an integrated drainage system that directs meat juices through the board and into a removable drip tray underneath.\n\nWhether you're resting steaks, slicing brisket, carving a turkey, or processing wild game, RAX keeps the mess contained and your counters clean. When you're finished, simply slide out the drip tray for easy cleanup.",
+      "price": 99.99,
+      "rating": 5,
+      "reviewCount": 0,
+      "wood": "Bamboo",
+      "dimensions": "16\" × 20\"",
+      "thickness": "2\"",
+      "weight": "—",
+      "inventory": 500,
+      "images": [
+        "/images/board-bamboo.jpg",
+        "/images/board-groove.jpg"
+      ],
+      "imagePosition": [
+        "50% 50%",
+        "50% 55%"
+      ],
+      "badge": "LAUNCH",
+      "features": [
+        "Integrated drainage system",
+        "Removable internal drip tray",
+        "Large 16\" × 20\" cutting surface",
+        "Heavy-duty construction",
+        "Designed for steaks, brisket, BBQ, wild game, and roasts",
+        "Helps prevent overflowing juice grooves and messy counters",
+        "Easy-to-remove tray for cleanup",
+        "RAX Cut Co. branding"
+      ],
+      "inStock": true,
+      "category": "board"
+    },
+    {
+      "id": "rax-original-drip-maple",
+      "slug": "rax-original-drip-board-maple",
+      "name": "RAX Original Drip Board",
+      "tagline": "Maple · Integrated drip tray.",
+      "description": "The RAX Original Drip Board is built for people who take meat seriously. Unlike traditional cutting boards that rely on shallow juice grooves, the RAX features an integrated drainage system that directs meat juices through the board and into a removable drip tray underneath.\n\nWhether you're resting steaks, slicing brisket, carving a turkey, or processing wild game, RAX keeps the mess contained and your counters clean. When you're finished, simply slide out the drip tray for easy cleanup.",
+      "price": 180,
+      "rating": 5,
+      "reviewCount": 0,
+      "wood": "Maple",
+      "dimensions": "16\" × 20\"",
+      "thickness": "2\"",
+      "weight": "—",
+      "inventory": 500,
+      "images": [
+        "/images/board-maple.jpg",
+        "/images/board-drawer.jpg"
+      ],
+      "imagePosition": [
+        "50% 50%",
+        "45% 55%"
+      ],
+      "badge": "PREMIUM",
+      "features": [
+        "Integrated drainage system",
+        "Removable internal drip tray",
+        "Large 16\" × 20\" cutting surface",
+        "Heavy-duty construction",
+        "Designed for steaks, brisket, BBQ, wild game, and roasts",
+        "Helps prevent overflowing juice grooves and messy counters",
+        "Easy-to-remove tray for cleanup",
+        "RAX Cut Co. branding"
+      ],
+      "inStock": true,
+      "category": "board"
+    }
+  ]
+}
