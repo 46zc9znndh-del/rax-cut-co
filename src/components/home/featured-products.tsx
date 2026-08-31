@@ -2,14 +2,14 @@ import Link from "next/link";
 import { ProductGrid } from "@/components/product/product-grid";
 import { Reveal } from "@/components/motion/reveal";
 import type { FeaturedSectionSettings } from "@/lib/cms/types";
-import type { Product } from "@/types";
+import type { StorefrontProduct } from "@/types";
 
 export function FeaturedProducts({
   settings,
   products,
 }: {
   settings: FeaturedSectionSettings;
-  products: Product[];
+  products: StorefrontProduct[];
 }) {
 
   return (

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/seo/json-ld";
-import { getProduct, getProducts } from "@/lib/products";
+import { getProduct, getProducts, getStorefrontProducts } from "@/lib/products";
 import { ProductDetail } from "@/components/product/product-detail";
 import { buildProductMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, productSchemaJson } from "@/lib/seo/json-ld";
@@ -29,7 +29,7 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const products = await getProducts();
+  const products = await getStorefrontProducts();
   const product = await getProduct(slug);
 
   return (

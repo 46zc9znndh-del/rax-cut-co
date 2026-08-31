@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { ProductGrid } from "@/components/product/product-grid";
 import { filterProducts } from "@/lib/search";
-import type { Product } from "@/types";
+import type { StorefrontProduct } from "@/types";
 
-export function SearchResults({ products }: { products: Product[] }) {
+export function SearchResults({ products }: { products: StorefrontProduct[] }) {
   const params = useSearchParams();
   const q = params.get("q") ?? "";
   const results = useMemo(() => filterProducts(products, q), [products, q]);

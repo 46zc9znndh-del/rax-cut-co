@@ -3,11 +3,11 @@
 import { useMemo, useState } from "react";
 import { ProductGrid } from "@/components/product/product-grid";
 import { cn } from "@/lib/utils";
-import type { Product, WoodType } from "@/types";
+import type { StorefrontProduct, WoodType } from "@/types";
 
 const filters: Array<"All" | WoodType> = ["All", "Bamboo", "Maple"];
 
-export function ShopCatalog({ products }: { products: Product[] }) {
+export function ShopCatalog({ products }: { products: StorefrontProduct[] }) {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
 
   const visible = useMemo(() => {

@@ -263,6 +263,38 @@ export function newsletterWelcomeEmail(
   };
 }
 
+export function newsletterBroadcastEmail(
+  {
+    subject,
+    headline,
+    intro,
+    closing,
+    ctaText,
+    ctaHref,
+  }: {
+    subject: string;
+    headline: string;
+    intro: string;
+    closing: string;
+    ctaText: string;
+    ctaHref: string;
+  },
+  siteUrl: string,
+  settings: EmailSettings = DEFAULT_EMAIL_SETTINGS
+) {
+  const href = ctaHref.startsWith("http") ? ctaHref : `${siteUrl}${ctaHref.startsWith("/") ? ctaHref : `/${ctaHref}`}`;
+
+  const body = `
+    <p style="margin:0 0 20px;">${intro}</p>
+    <p style="margin:20px 0 0;color:${brand.muted};">${closing}</p>
+    ${cta(href, ctaText)}`;
+
+  return {
+    subject,
+    html: layout(settings, headline, body, siteUrl),
+  };
+}
+
 export function testEmail(siteUrl: string, settings: EmailSettings = DEFAULT_EMAIL_SETTINGS) {
   const body = `
     <p style="margin:0 0 20px;">This is a test email from your ${settings.brandName} storefront admin.</p>

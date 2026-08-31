@@ -4,6 +4,7 @@ import type { Order } from "@/lib/orders/types";
 import { getResendClient } from "./client";
 import { getEmailConfig, getEffectiveFromAddress, getReplyToEmail, canEmailRecipient } from "./config";
 import {
+  newsletterBroadcastEmail,
   newsletterWelcomeEmail,
   orderAdminEmail,
   orderConfirmationEmail,
@@ -159,4 +160,44 @@ export async function subscribeToNewsletter(email: string) {
   }
 
   return { email: normalized, welcomeSent };
+}
+
+export async function sendNewsletterBroadcast(input: {
+  subject: string;
+  headline: string;
+  intro: string;
+  closing: string;
+  ctaText: string;
+  ctaHref: string;
+  previewText?: string;
+}) {
+  const { segmentId, siteUrl, enabled, apiKey } = getEmailConfig();
+  if (!enabled || !apiKey) {
+    throw new Error("Resend is not configured.");
+  }
+  if (!segmentId) {
+    throw new Error("RESEND_SEGMENT_ID is not configured.");
+  }
+
+  const template = newsletterBroadcastEmail(input, siteUrl, await getEmailSettings());
+  const from = getEffectiveFromAddress();
+  const replyTo = getReplyToEmail();
+  const resend = getResendClient();
+
+  const result = await resend.broadcasts.create({
+    segmentId,
+    from,
+    subject: template.subject,
+    html: template.html,
+    name: input.subject.slice(0, 80),
+    previewText: input.previewText || input.intro.slice(0, 120),
+    replyTo,
+    send: true,
+  });
+
+  if (result.error) {
+    throw new Error(result.error.message);
+  }
+
+  return { id: result.data?.id ?? null };
 }

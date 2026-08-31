@@ -7,7 +7,7 @@ import { CareGuide } from "@/components/home/care-guide";
 import { Reviews } from "@/components/home/reviews";
 import { PortfolioGallery } from "@/components/portfolio/portfolio-gallery";
 import { getCmsData } from "@/lib/cms/store";
-import { getProducts } from "@/lib/products";
+import { getFeaturedProducts } from "@/lib/products";
 import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -21,7 +21,7 @@ export const metadata: Metadata = buildPageMetadata({
 
 export default async function Home() {
   const { site } = await getCmsData();
-  const products = await getProducts();
+  const products = await getFeaturedProducts();
 
   return (
     <>

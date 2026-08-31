@@ -116,6 +116,16 @@ export type ReviewsSettings = {
 export type StoreSettings = {
   freeShippingThreshold: number;
   standardShippingRate: number;
+  lowStockThreshold: number;
+  lowStockMessage: string;
+};
+
+export type SitePopupSettings = {
+  enabled: boolean;
+  headline: string;
+  body: string;
+  ctaText: string;
+  ctaHref: string;
 };
 
 export type EmailTemplateSettings = {
@@ -149,6 +159,7 @@ export type SiteSettings = {
   footer: FooterSettings;
   reviews: ReviewsSettings;
   storeSettings: StoreSettings;
+  popup: SitePopupSettings;
   emailSettings: EmailSettings;
 };
 

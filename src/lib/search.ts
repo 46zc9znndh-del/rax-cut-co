@@ -1,6 +1,6 @@
-import type { Product } from "@/types";
+import type { StorefrontProduct } from "@/types";
 
-export function filterProducts(products: Product[], query: string) {
+export function filterProducts(products: StorefrontProduct[], query: string) {
   const q = query.trim().toLowerCase();
   if (!q) return products;
   return products.filter((product) =>

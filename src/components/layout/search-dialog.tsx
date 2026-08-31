@@ -9,12 +9,12 @@ import { Input } from "@/components/ui/input";
 import { useUiStore } from "@/store/cart-store";
 import { filterProducts } from "@/lib/search";
 import { formatCurrency } from "@/lib/utils";
-import type { Product } from "@/types";
+import type { StorefrontProduct } from "@/types";
 
 export function SearchDialog() {
   const { searchOpen, closeSearch } = useUiStore();
   const [query, setQuery] = useState("");
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<StorefrontProduct[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export function SearchDialog() {
     let cancelled = false;
     void fetch("/api/cms")
       .then((response) => response.json())
-      .then((data: { products?: Product[] }) => {
+      .then((data: { products?: StorefrontProduct[] }) => {
         if (!cancelled) {
           setProducts(data.products ?? []);
           setLoaded(true);

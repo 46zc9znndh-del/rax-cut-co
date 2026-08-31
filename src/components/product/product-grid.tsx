@@ -1,7 +1,7 @@
 import { ProductCard } from "@/components/product/product-card";
-import type { Product } from "@/types";
+import type { StorefrontProduct } from "@/types";
 
-export function ProductGrid({ products }: { products: Product[] }) {
+export function ProductGrid({ products }: { products: StorefrontProduct[] }) {
   if (products.length === 0) {
     return (
       <p className="py-20 text-center font-display tracking-[0.16em] text-rax-muted uppercase">

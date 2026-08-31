@@ -2,6 +2,7 @@ import type {
   FooterSettings,
   NavLink,
   ReviewsSettings,
+  SitePopupSettings,
   SiteSettings,
   StoreSettings,
   EmailSettings,
@@ -108,6 +109,16 @@ export const DEFAULT_REVIEWS: ReviewsSettings = {
 export const DEFAULT_STORE_SETTINGS: StoreSettings = {
   freeShippingThreshold: 150,
   standardShippingRate: 18,
+  lowStockThreshold: 10,
+  lowStockMessage: "Limited stock — order soon",
+};
+
+export const DEFAULT_SITE_POPUP: SitePopupSettings = {
+  enabled: false,
+  headline: "Launch offer",
+  body: "Free shipping on orders over $150. Limited launch boards available.",
+  ctaText: "Shop boards",
+  ctaHref: "/shop",
 };
 
 export const DEFAULT_EMAIL_SETTINGS: EmailSettings = {
@@ -155,7 +166,14 @@ export function withSiteDefaults(site: SiteSettings): SiteSettings {
       employeeLoginHref: footer.employeeLoginHref ?? DEFAULT_FOOTER.employeeLoginHref,
     },
     reviews: site.reviews ?? DEFAULT_REVIEWS,
-    storeSettings: site.storeSettings ?? DEFAULT_STORE_SETTINGS,
+    storeSettings: {
+      ...DEFAULT_STORE_SETTINGS,
+      ...(site.storeSettings ?? {}),
+    },
+    popup: {
+      ...DEFAULT_SITE_POPUP,
+      ...(site.popup ?? {}),
+    },
     emailSettings: {
       ...DEFAULT_EMAIL_SETTINGS,
       ...emailSettings,

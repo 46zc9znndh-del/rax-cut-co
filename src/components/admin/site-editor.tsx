@@ -19,11 +19,13 @@ import {
   HeroExtrasPanel,
   NavPanel,
   PortfolioExtrasPanel,
+  PopupSettingsPanel,
   ReviewsPanel,
   SITE_EDITOR_TABS,
   StoreSettingsPanel,
   type SiteEditorTab,
 } from "@/components/admin/site-editor-extra-panels";
+import { NewsletterBroadcastPanel } from "@/components/admin/newsletter-broadcast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -663,10 +665,18 @@ export function SiteEditorPage() {
         ) : null}
 
         {tab === "Store" ? (
-          <StoreSettingsPanel cms={cms} setCms={setCms} images={images} />
+          <>
+            <StoreSettingsPanel cms={cms} setCms={setCms} images={images} />
+            <PopupSettingsPanel cms={cms} setCms={setCms} images={images} />
+          </>
         ) : null}
 
-        {tab === "Emails" ? <EmailSettingsPanel cms={cms} setCms={setCms} images={images} /> : null}
+        {tab === "Emails" ? (
+          <>
+            <EmailSettingsPanel cms={cms} setCms={setCms} images={images} />
+            <NewsletterBroadcastPanel />
+          </>
+        ) : null}
       </div>
 
       <div className="mt-8">

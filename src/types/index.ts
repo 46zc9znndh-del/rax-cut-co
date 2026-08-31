@@ -23,6 +23,11 @@ export type Product = {
   category: "board" | "gear";
 };
 
+/** Storefront-safe product — exact inventory is admin-only. */
+export type StorefrontProduct = Omit<Product, "inventory"> & {
+  lowStock: boolean;
+};
+
 export type Review = {
   id: string;
   name: string;

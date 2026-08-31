@@ -10,19 +10,19 @@ import { ProductCard } from "@/components/product/product-card";
 import { useCartStore } from "@/store/cart-store";
 import { useStoreSettings } from "@/lib/store-settings-context";
 import { formatCurrency, cn } from "@/lib/utils";
-import type { Product } from "@/types";
+import type { StorefrontProduct } from "@/types";
 
 export function ProductDetail({
   slug,
   products,
 }: {
   slug: string;
-  products: Product[];
+  products: StorefrontProduct[];
 }) {
   const product = products.find((item) => item.slug === slug);
   const addItem = useCartStore((s) => s.addItem);
   const openCart = useCartStore((s) => s.openCart);
-  const { freeShippingThreshold } = useStoreSettings();
+  const { freeShippingThreshold, lowStockMessage } = useStoreSettings();
   const [active, setActive] = useState(0);
 
   if (!product) {
@@ -130,6 +130,12 @@ export function ProductDetail({
             <p className="mt-6 font-display text-3xl tracking-wide">
               {formatCurrency(item.price)}
             </p>
+            {item.lowStock ? (
+              <p className="mt-3 text-sm font-medium text-rax-ember">{lowStockMessage}</p>
+            ) : null}
+            {!item.inStock ? (
+              <p className="mt-3 text-sm font-medium text-rax-muted">Currently out of stock</p>
+            ) : null}
 
             {variants.length > 1 ? (
               <div className="mt-6">
@@ -156,8 +162,15 @@ export function ProductDetail({
             ) : null}
 
             <div className="mt-8 border border-black/10 bg-rax-charcoal p-5 text-white">
-              <Button className="w-full" size="lg" onClick={handleAddToCart}>
-                Add to Cart · {formatCurrency(item.price)}
+              <Button
+                className="w-full"
+                size="lg"
+                disabled={!item.inStock}
+                onClick={handleAddToCart}
+              >
+                {item.inStock
+                  ? `Add to Cart · ${formatCurrency(item.price)}`
+                  : "Out of Stock"}
               </Button>
               <p className="mt-3 text-center text-xs tracking-[0.12em] text-rax-muted-dark uppercase">
                 Free shipping over {formatCurrency(freeShippingThreshold)} · Lifetime guarantee

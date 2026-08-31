@@ -789,47 +789,148 @@ function EmailTemplatePanel({
 export function StoreSettingsPanel({ cms, setCms }: EditorProps) {
   const settings = cms.site.storeSettings;
   return (
-    <AdminPanel title="Store Settings">
+    <>
+      <AdminPanel title="Store Settings">
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <FieldLabel>Free Shipping Threshold ($)</FieldLabel>
+            <Input
+              type="number"
+              min={0}
+              step={1}
+              value={settings.freeShippingThreshold}
+              onChange={(e) =>
+                updateSite(setCms, {
+                  storeSettings: {
+                    ...settings,
+                    freeShippingThreshold: Number(e.target.value) || 0,
+                  },
+                })
+              }
+              className="border-white/20 bg-black text-white"
+            />
+          </div>
+          <div>
+            <FieldLabel>Standard Shipping Rate ($)</FieldLabel>
+            <Input
+              type="number"
+              min={0}
+              step={0.01}
+              value={settings.standardShippingRate}
+              onChange={(e) =>
+                updateSite(setCms, {
+                  storeSettings: {
+                    ...settings,
+                    standardShippingRate: Number(e.target.value) || 0,
+                  },
+                })
+              }
+              className="border-white/20 bg-black text-white"
+            />
+          </div>
+          <div>
+            <FieldLabel>Low Stock Threshold (admin + customer alert)</FieldLabel>
+            <Input
+              type="number"
+              min={1}
+              step={1}
+              value={settings.lowStockThreshold}
+              onChange={(e) =>
+                updateSite(setCms, {
+                  storeSettings: {
+                    ...settings,
+                    lowStockThreshold: Number(e.target.value) || 10,
+                  },
+                })
+              }
+              className="border-white/20 bg-black text-white"
+            />
+          </div>
+          <div>
+            <FieldLabel>Low Stock Message (shown to customers)</FieldLabel>
+            <Input
+              value={settings.lowStockMessage}
+              onChange={(e) =>
+                updateSite(setCms, {
+                  storeSettings: {
+                    ...settings,
+                    lowStockMessage: e.target.value,
+                  },
+                })
+              }
+              className="border-white/20 bg-black text-white"
+            />
+          </div>
+        </div>
+        <p className="mt-4 text-sm text-white/50">
+          Exact inventory counts are admin-only. Customers see the low stock message when inventory
+          drops below the threshold. Also update the announcement bar if you change free shipping.
+        </p>
+      </AdminPanel>
+    </>
+  );
+}
+
+export function PopupSettingsPanel({ cms, setCms }: EditorProps) {
+  const popup = cms.site.popup;
+  return (
+    <AdminPanel title="Site Popup">
+      <label className="mb-4 flex items-center gap-2 text-sm text-white/80">
+        <input
+          type="checkbox"
+          checked={popup.enabled}
+          onChange={(e) =>
+            updateSite(setCms, {
+              popup: { ...popup, enabled: e.target.checked },
+            })
+          }
+        />
+        Show popup on the storefront
+      </label>
       <div className="grid gap-4 md:grid-cols-2">
-        <div>
-          <FieldLabel>Free Shipping Threshold ($)</FieldLabel>
+        <div className="md:col-span-2">
+          <FieldLabel>Headline</FieldLabel>
           <Input
-            type="number"
-            min={0}
-            step={1}
-            value={settings.freeShippingThreshold}
+            value={popup.headline}
             onChange={(e) =>
-              updateSite(setCms, {
-                storeSettings: {
-                  ...settings,
-                  freeShippingThreshold: Number(e.target.value) || 0,
-                },
-              })
+              updateSite(setCms, { popup: { ...popup, headline: e.target.value } })
+            }
+            className="border-white/20 bg-black text-white"
+          />
+        </div>
+        <div className="md:col-span-2">
+          <FieldLabel>Body</FieldLabel>
+          <textarea
+            value={popup.body}
+            onChange={(e) => updateSite(setCms, { popup: { ...popup, body: e.target.value } })}
+            rows={4}
+            className="w-full rounded-md border border-white/20 bg-black px-3 py-2 text-white"
+          />
+        </div>
+        <div>
+          <FieldLabel>Button Text</FieldLabel>
+          <Input
+            value={popup.ctaText}
+            onChange={(e) =>
+              updateSite(setCms, { popup: { ...popup, ctaText: e.target.value } })
             }
             className="border-white/20 bg-black text-white"
           />
         </div>
         <div>
-          <FieldLabel>Standard Shipping Rate ($)</FieldLabel>
+          <FieldLabel>Button Link</FieldLabel>
           <Input
-            type="number"
-            min={0}
-            step={0.01}
-            value={settings.standardShippingRate}
+            value={popup.ctaHref}
             onChange={(e) =>
-              updateSite(setCms, {
-                storeSettings: {
-                  ...settings,
-                  standardShippingRate: Number(e.target.value) || 0,
-                },
-              })
+              updateSite(setCms, { popup: { ...popup, ctaHref: e.target.value } })
             }
             className="border-white/20 bg-black text-white"
           />
         </div>
       </div>
       <p className="mt-4 text-sm text-white/50">
-        Also update the announcement bar line 1 if you change the free shipping threshold.
+        Popup appears once per browser session until dismissed. For always-on messages, use the
+        announcement bar on the Homepage tab.
       </p>
     </AdminPanel>
   );

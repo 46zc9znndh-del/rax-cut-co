@@ -82,17 +82,18 @@ function writeOrdersFile(data: OrdersData): OrdersData {
 }
 
 function getLowStockProducts() {
-  return getCmsData().then((cms) =>
-    cms.products
-      .filter((product) => product.inventory <= 50)
+  return getCmsData().then((cms) => {
+    const threshold = cms.site.storeSettings.lowStockThreshold;
+    return cms.products
+      .filter((product) => product.inventory > 0 && product.inventory < threshold)
       .map((product) => ({
         id: product.id,
         name: product.name,
         wood: product.wood,
         inventory: product.inventory,
       }))
-      .sort((a, b) => a.inventory - b.inventory)
-  );
+      .sort((a, b) => a.inventory - b.inventory);
+  });
 }
 
 async function applyInventoryForOrder(order: Order) {

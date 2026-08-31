@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { SearchResults } from "@/components/product/search-results";
-import { getProducts } from "@/lib/products";
+import { searchProducts } from "@/lib/products";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -12,7 +12,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function SearchPage() {
-  const products = await getProducts();
+  const products = await searchProducts("");
 
   return (
     <Suspense fallback={<div className="px-4 py-20 text-rax-muted">Loading search…</div>}>

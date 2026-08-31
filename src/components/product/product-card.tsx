@@ -5,11 +5,13 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cart-store";
+import { useStoreSettings } from "@/lib/store-settings-context";
 import { formatCurrency } from "@/lib/utils";
-import type { Product } from "@/types";
+import type { StorefrontProduct } from "@/types";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product }: { product: StorefrontProduct }) {
   const addItem = useCartStore((s) => s.addItem);
+  const { lowStockMessage } = useStoreSettings();
   const posA = product.imagePosition?.[0] ?? "50% 46%";
   const posB = product.imagePosition?.[1] ?? posA;
   const hoverImage = product.images[1] ?? product.images[0];
@@ -39,11 +41,16 @@ export function ProductCard({ product }: { product: Product }) {
             sizes="(max-width: 768px) 100vw, 33vw"
           />
         ) : null}
-        {product.badge && (
+        {product.badge ? (
           <Badge className="absolute top-3 left-3 border-none bg-rax-ember text-white">
             {product.badge}
           </Badge>
-        )}
+        ) : null}
+        {product.lowStock ? (
+          <Badge className="absolute top-3 right-3 border-none bg-black/80 text-white">
+            {lowStockMessage}
+          </Badge>
+        ) : null}
       </Link>
       <div className="flex flex-1 flex-col pt-4">
         <h3 className="font-display text-[15px] tracking-[0.12em] text-rax-ink uppercase">
@@ -60,18 +67,24 @@ export function ProductCard({ product }: { product: Product }) {
             <p className="font-display text-lg tracking-wide text-rax-ink">
               {formatCurrency(product.price)}
             </p>
-            <p className="text-xs text-rax-muted">
-              {product.inventory.toLocaleString()} available
-            </p>
+            {product.lowStock ? (
+              <p className="text-xs font-medium text-rax-ember">{lowStockMessage}</p>
+            ) : null}
           </div>
-          <Button size="sm" onClick={() => addItem({
+          <Button
+            size="sm"
+            disabled={!product.inStock}
+            onClick={() =>
+              addItem({
                 id: product.id,
                 slug: product.slug,
                 name: product.name,
                 price: product.price,
                 image: product.images[0],
                 wood: product.wood,
-              })}>
+              })
+            }
+          >
             Add
           </Button>
         </div>
