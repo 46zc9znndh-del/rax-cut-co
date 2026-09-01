@@ -54,3 +54,19 @@ alter table public.orders enable row level security;
 insert into storage.buckets (id, name, public)
 values ('site-images', 'site-images', true)
 on conflict (id) do update set public = excluded.public;
+
+create policy "Public read site images"
+on storage.objects for select
+using (bucket_id = 'site-images');
+
+create policy "Service role upload site images"
+on storage.objects for insert
+with check (bucket_id = 'site-images');
+
+create policy "Service role update site images"
+on storage.objects for update
+using (bucket_id = 'site-images');
+
+create policy "Service role delete site images"
+on storage.objects for delete
+using (bucket_id = 'site-images');

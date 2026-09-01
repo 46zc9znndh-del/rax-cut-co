@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { uploadAdminImage } from "@/lib/images/admin-upload-client";
 
 const ADMIN_LINKS = [
   { href: "/admin/dashboard", label: "Dashboard" },
@@ -344,18 +345,9 @@ export function AdminPhotoField({
     setUploading(true);
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await fetch("/api/admin/upload", { method: "POST", body: formData });
-      const body = (await response.json()) as { url?: string; error?: string };
-
-      if (!response.ok || !body.url) {
-        throw new Error(body.error || "Upload failed");
-      }
-
-      onUploaded?.(body.url);
-      onChange(body.url);
+      const url = await uploadAdminImage(file);
+      onUploaded?.(url);
+      onChange(url);
       setPickerOpen(false);
     } catch (error) {
       setUploadError(error instanceof Error ? error.message : "Upload failed");
@@ -414,7 +406,7 @@ export function AdminPhotoField({
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,.heic,.heif"
         className="hidden"
         onChange={(event) => {
           const file = event.target.files?.[0];

@@ -1,6 +1,5 @@
 /** Curated shots for shop products — dedicated board photography, not portfolio gallery picks. */
 export const PRODUCT_IMAGE_OPTIONS = [
-  "/images/board-bamboo.jpg",
   "/images/board-maple.jpg",
   "/images/board-groove.jpg",
   "/images/board-drawer.jpg",
@@ -12,8 +11,8 @@ export const PRODUCT_IMAGE_OPTIONS = [
 ] as const;
 
 export const DEFAULT_PRODUCT_IMAGES = {
-  maple: [PRODUCT_IMAGE_OPTIONS[1], PRODUCT_IMAGE_OPTIONS[3]],
-  default: [PRODUCT_IMAGE_OPTIONS[1], PRODUCT_IMAGE_OPTIONS[3]],
+  maple: [PRODUCT_IMAGE_OPTIONS[0], PRODUCT_IMAGE_OPTIONS[2]],
+  default: [PRODUCT_IMAGE_OPTIONS[0], PRODUCT_IMAGE_OPTIONS[2]],
 };
 
 export function productImageLibrary(allImages: string[]) {

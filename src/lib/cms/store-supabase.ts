@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { buildUploadFilename } from "@/lib/images/upload";
 import { withSiteDefaults } from "@/lib/cms/defaults";
 import type { CmsData } from "@/lib/cms/types";
 
@@ -43,28 +44,25 @@ export async function saveCmsToSupabase(data: CmsData): Promise<CmsData> {
   return next;
 }
 
-export async function uploadImageToSupabase(file: File) {
+export async function uploadImageToSupabase(
+  buffer: Buffer,
+  originalName: string,
+  contentType = "image/jpeg"
+) {
   const supabase = createSupabaseServerClient();
-  const ext = file.name.includes(".") ? file.name.slice(file.name.lastIndexOf(".")).toLowerCase() : ".jpg";
-  const safeName = file.name
-    .replace(/\.[^.]+$/, "")
-    .replace(/[^a-z0-9-_]+/gi, "-")
-    .toLowerCase()
-    .slice(0, 48);
-  const filename = `${safeName || "upload"}-${Date.now()}${ext}`;
-  const path = `uploads/${filename}`;
+  const filename = buildUploadFilename(originalName).replace(/\.[^.]+$/, ".jpg");
+  const storagePath = `uploads/${filename}`;
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const { error } = await supabase.storage.from("site-images").upload(path, buffer, {
-    contentType: file.type,
-    upsert: false,
+  const { error } = await supabase.storage.from("site-images").upload(storagePath, buffer, {
+    contentType,
+    upsert: true,
   });
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
 
   const {
     data: { publicUrl },
-  } = supabase.storage.from("site-images").getPublicUrl(path);
+  } = supabase.storage.from("site-images").getPublicUrl(storagePath);
 
   return publicUrl;
 }
