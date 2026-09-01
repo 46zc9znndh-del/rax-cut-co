@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
   try {
     const body = (await request.json()) as { password?: string };
-    const password = body.password ?? "";
+    const password = body.password?.trim() ?? "";
 
     if (!verifyAdminPassword(password)) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });

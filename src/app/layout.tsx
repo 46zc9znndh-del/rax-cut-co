@@ -28,7 +28,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 const siteDescription =
-  "RAX Cut Co. builds American hardwood cutting boards with an integrated drip tray — for steaks, brisket, BBQ, and wild game. Bamboo from $99.99 · Maple $180.";
+  "RAX Cut Co. builds American hardwood cutting boards with an integrated drip tray — for steaks, brisket, BBQ, and wild game. Maple from $180.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

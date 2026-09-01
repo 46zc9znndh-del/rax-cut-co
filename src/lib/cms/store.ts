@@ -66,6 +66,10 @@ const getCachedCmsData = unstable_cache(loadCmsData, ["rax-cms-document"], {
 
 export const getCmsData = cache(getCachedCmsData);
 
+export async function getFreshCmsData(): Promise<CmsData> {
+  return loadCmsData();
+}
+
 export async function saveCmsData(data: CmsData): Promise<CmsData> {
   let saved: CmsData;
 

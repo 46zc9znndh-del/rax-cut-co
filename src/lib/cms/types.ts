@@ -183,4 +183,4 @@ export type CmsProductInput = Omit<CmsProduct, "id" | "slug"> & {
   slug?: string;
 };
 
-export const WOOD_TYPES: WoodType[] = ["Bamboo", "Maple"];
+export const WOOD_TYPES: WoodType[] = ["Maple", "Walnut", "Cherry", "Oak"];

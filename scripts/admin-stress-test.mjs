@@ -20,6 +20,11 @@ function loadEnv() {
 loadEnv();
 
 const results = [];
+const testIp = `127.0.0.1-test-${Date.now()}`;
+
+function testHeaders(extra = {}) {
+  return { "x-forwarded-for": testIp, ...extra };
+}
 
 function pass(name, detail = "") {
   results.push({ name, ok: true, detail });
@@ -40,7 +45,7 @@ async function login() {
   const password = process.env.ADMIN_PASSWORD ?? "rax-admin";
   const response = await fetch(`${BASE_URL}/api/admin/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: testHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify({ password }),
   });
 
@@ -102,10 +107,9 @@ async function stressCms(cookie) {
   draft.site.footer.tagline = `${stamp} footer`;
   draft.site.storeSettings.freeShippingThreshold = 151;
   draft.site.nav.links[0].label = `${stamp} Shop`;
-  draft.products[0].images = ["/images/board-bamboo.jpg", "/images/board-counter.jpg"];
-  draft.products[1].images = ["/images/board-maple.jpg", "/images/board-action.jpg"];
-  draft.products[0].tagline = `${stamp} bamboo`;
-  draft.products[1].inventory = 499;
+  draft.products[0].images = ["/images/board-maple.jpg", "/images/board-counter.jpg"];
+  draft.products[0].tagline = `${stamp} maple`;
+  draft.products[0].inventory = 499;
 
   const save = await adminFetch(
     "/api/admin/cms",
@@ -133,10 +137,9 @@ async function stressCms(cookie) {
     ["footer tagline", saved.site.footer.tagline, `${stamp} footer`],
     ["shipping threshold", saved.site.storeSettings.freeShippingThreshold, 151],
     ["nav label", saved.site.nav.links[0].label, `${stamp} Shop`],
-    ["bamboo image", saved.products[0].images[0], "/images/board-bamboo.jpg"],
-    ["maple image", saved.products[1].images[0], "/images/board-maple.jpg"],
-    ["bamboo tagline", saved.products[0].tagline, `${stamp} bamboo`],
-    ["maple inventory", saved.products[1].inventory, 499],
+    ["maple image", saved.products[0].images[0], "/images/board-maple.jpg"],
+    ["maple tagline", saved.products[0].tagline, `${stamp} maple`],
+    ["maple inventory", saved.products[0].inventory, 499],
   ];
 
   for (const [label, actual, expected] of checks) {
@@ -158,8 +161,7 @@ async function stressCms(cookie) {
 
   const restorePayload = clone(original);
   restorePayload.site.portfolio.page.headline = "Boards in Action";
-  restorePayload.products[0].images = ["/images/board-bamboo.jpg", "/images/board-groove.jpg"];
-  restorePayload.products[1].images = ["/images/board-maple.jpg", "/images/board-drawer.jpg"];
+  restorePayload.products[0].images = ["/images/board-maple.jpg", "/images/board-drawer.jpg"];
 
   const restore = await adminFetch(
     "/api/admin/cms",
@@ -182,8 +184,7 @@ async function stressCms(cookie) {
   const { cms: final } = await verify.json();
   if (
     final.site.portfolio.page.headline === "Boards in Action" &&
-    final.products[0].images[0] === "/images/board-bamboo.jpg" &&
-    final.products[1].images[0] === "/images/board-maple.jpg"
+    final.products[0].images[0] === "/images/board-maple.jpg"
   ) {
     pass("CMS final state", "portfolio + product images");
   } else {
@@ -205,8 +206,8 @@ async function stressAdminApis(cookie) {
 
   const badLogin = await fetch(`${BASE_URL}/api/admin/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ password: "wrong-password-${Date.now()}" }),
+    headers: testHeaders({ "Content-Type": "application/json" }),
+    body: JSON.stringify({ password: `wrong-password-${Date.now()}` }),
   });
   if (badLogin.status === 401) pass("Admin bad login", "401 as expected");
   else fail("Admin bad login", `status ${badLogin.status}`);

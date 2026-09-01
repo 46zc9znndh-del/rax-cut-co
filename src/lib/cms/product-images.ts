@@ -12,8 +12,8 @@ export const PRODUCT_IMAGE_OPTIONS = [
 ] as const;
 
 export const DEFAULT_PRODUCT_IMAGES = {
-  bamboo: [PRODUCT_IMAGE_OPTIONS[0], PRODUCT_IMAGE_OPTIONS[2]],
   maple: [PRODUCT_IMAGE_OPTIONS[1], PRODUCT_IMAGE_OPTIONS[3]],
+  default: [PRODUCT_IMAGE_OPTIONS[1], PRODUCT_IMAGE_OPTIONS[3]],
 };
 
 export function productImageLibrary(allImages: string[]) {

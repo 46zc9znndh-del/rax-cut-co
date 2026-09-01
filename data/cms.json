@@ -52,8 +52,8 @@
       },
       {
         "id": "wood",
-        "title": "Bamboo or Maple",
-        "copy": "Launch options from $99.99 bamboo to $180 maple — same drip system either way."
+        "title": "American Hardwood",
+        "copy": "Premium maple and hardwood options — same integrated drip system on every board."
       },
       {
         "id": "guarantee",
@@ -85,7 +85,7 @@
         "id": "mark",
         "kicker": "The Mark",
         "headline": "Laser Precision & Custom Branding",
-        "body": "Every RAX board leaves with a laser-true edge and the steer mark burned into the grain. Bamboo or maple — same drainage system, same RAX Cut Co. stamp.",
+        "body": "Every RAX board leaves with a laser-true edge and the steer mark burned into the grain. American hardwood — same drainage system, same RAX Cut Co. stamp.",
         "image": "/images/portfolio/laser-mark.jpg",
         "imagePosition": "55% 55%",
         "variant": "black",
@@ -114,7 +114,7 @@
     "shopPage": {
       "kicker": "The Shop",
       "headline": "Original Drip Board",
-      "description": "16\" × 20\" × 2\". Integrated drainage. Removable drip tray. Bamboo from $99.99 · Maple $180. Launch inventory: 1,000 units."
+      "description": "16\" × 20\" × 2\". Integrated drainage. Removable drip tray. Maple $180. Launch inventory: 500 units."
     },
     "portfolio": {
       "page": {
@@ -267,7 +267,7 @@
           "rating": 5,
           "title": "Steak night without the mess",
           "body": "Resting steaks used to mean a puddle on the counter. The removable tray catches everything. Guests notice the bull stamp before dinner hits the table.",
-          "product": "RAX Original Drip Board — Bamboo",
+          "product": "RAX Original Drip Board — Maple",
           "image": "/images/portfolio/steak-rest.jpg",
           "date": "Aug 2026"
         },
@@ -289,7 +289,7 @@
           "rating": 5,
           "title": "Thanksgiving turkey, zero overflow",
           "body": "Carved the bird on the Original Drip Board. Juice groove would've overflowed — the tray never did. Already telling the family.",
-          "product": "RAX Original Drip Board — Bamboo",
+          "product": "RAX Original Drip Board — Maple",
           "image": "/images/portfolio/juice-groove.jpg",
           "date": "Jul 2026"
         },
@@ -309,9 +309,9 @@
           "name": "Hannah Ruiz",
           "location": "Portland, OR",
           "rating": 5,
-          "title": "Bamboo launch pick",
-          "body": "Grabbed the bamboo at $99.99 for the launch. Same drip system as maple, lighter price, still feels like a serious tool.",
-          "product": "RAX Original Drip Board — Bamboo",
+          "title": "Maple build, serious feel",
+          "body": "Went with maple for the launch. Same drip system, heavy 2-inch build, still feels like a serious tool.",
+          "product": "RAX Original Drip Board — Maple",
           "image": "/images/portfolio/carving-line.jpg",
           "date": "Jun 2026"
         }
@@ -329,7 +329,7 @@
       "orderConfirmation": {
         "subject": "Order confirmed — {{orderNumber}}",
         "headline": "Order Confirmed",
-        "intro": "{{greeting}} your order is confirmed. We're prepping your board for shipment from Washington.",
+        "intro": "{{greeting}} your Original Drip Board order is confirmed. We're prepping your maple board for shipment from Washington.",
         "closing": "Thanks for supporting American hardwood.",
         "ctaText": "Shop RAX"
       },
@@ -351,42 +351,6 @@
     }
   },
   "products": [
-    {
-      "id": "rax-original-drip-bamboo",
-      "slug": "rax-original-drip-board-bamboo",
-      "name": "RAX Original Drip Board",
-      "tagline": "Bamboo · Integrated drip tray.",
-      "description": "The RAX Original Drip Board is built for people who take meat seriously. Unlike traditional cutting boards that rely on shallow juice grooves, the RAX features an integrated drainage system that directs meat juices through the board and into a removable drip tray underneath.\n\nWhether you're resting steaks, slicing brisket, carving a turkey, or processing wild game, RAX keeps the mess contained and your counters clean. When you're finished, simply slide out the drip tray for easy cleanup.",
-      "price": 99.99,
-      "rating": 5,
-      "reviewCount": 0,
-      "wood": "Bamboo",
-      "dimensions": "16\" × 20\"",
-      "thickness": "2\"",
-      "weight": "—",
-      "inventory": 500,
-      "images": [
-        "/images/board-bamboo.jpg",
-        "/images/board-groove.jpg"
-      ],
-      "imagePosition": [
-        "50% 50%",
-        "50% 55%"
-      ],
-      "badge": "LAUNCH",
-      "features": [
-        "Integrated drainage system",
-        "Removable internal drip tray",
-        "Large 16\" × 20\" cutting surface",
-        "Heavy-duty construction",
-        "Designed for steaks, brisket, BBQ, wild game, and roasts",
-        "Helps prevent overflowing juice grooves and messy counters",
-        "Easy-to-remove tray for cleanup",
-        "RAX Cut Co. branding"
-      ],
-      "inStock": true,
-      "category": "board"
-    },
     {
       "id": "rax-original-drip-maple",
       "slug": "rax-original-drip-board-maple",

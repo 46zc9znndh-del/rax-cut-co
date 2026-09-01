@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth";
-import { getCmsData, listPublicImages, saveCmsData } from "@/lib/cms/store";
+import { getFreshCmsData, listPublicImages, saveCmsData } from "@/lib/cms/store";
 import { productImageLibrary } from "@/lib/cms/product-images";
 import type { CmsData } from "@/lib/cms/types";
 
@@ -11,7 +11,7 @@ export async function GET() {
   }
 
   return NextResponse.json({
-    cms: await getCmsData(),
+    cms: await getFreshCmsData(),
     images: await listPublicImages(),
     productImages: productImageLibrary(await listPublicImages()),
   });

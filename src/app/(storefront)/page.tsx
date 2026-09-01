@@ -14,7 +14,7 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 export const metadata: Metadata = buildPageMetadata({
   title: "Original Drip Board — Crafted for the Cut",
   description:
-    "RAX Cut Co. Original Drip Board — American hardwood with integrated drainage and removable drip tray. Bamboo $99.99 · Maple $180. Free shipping over $150.",
+    "RAX Cut Co. Original Drip Board — American hardwood with integrated drainage and removable drip tray. Maple $180. Free shipping over $150.",
   path: "/",
   ogImage: "/images/portfolio/steak-rest.jpg",
 });

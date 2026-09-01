@@ -62,6 +62,11 @@ export function AdminLoginForm() {
         />
       </div>
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
+      {process.env.NODE_ENV === "development" ? (
+        <p className="text-xs text-white/40">
+          Admin password is set in <code className="text-white/60">.env.local</code> / Vercel env.
+        </p>
+      ) : null}
       <Button type="submit" disabled={loading} className="w-full">
         {loading ? "Signing in..." : "Sign In"}
       </Button>

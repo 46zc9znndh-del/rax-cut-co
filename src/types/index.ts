@@ -1,4 +1,4 @@
-export type WoodType = "Bamboo" | "Maple";
+export type WoodType = string;
 
 export type Product = {
   id: string;

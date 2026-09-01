@@ -7,12 +7,11 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 export const metadata: Metadata = buildPageMetadata({
   title: "Shop Original Drip Board",
   description:
-    "Shop the RAX Original Drip Board in Bamboo ($99.99) and Maple ($180). Integrated drainage system with removable drip tray. Free shipping over $150.",
+    "Shop the RAX Original Drip Board in Maple ($180). Integrated drainage system with removable drip tray. Free shipping over $150.",
   path: "/shop",
   keywords: [
     "shop cutting board",
     "buy drip board",
-    "bamboo drip board",
     "maple drip board",
     "RAX Original Drip Board",
   ],

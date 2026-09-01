@@ -8,7 +8,6 @@ export const BRAND_KEYWORDS = [
   "cutting board",
   "drip board",
   "drip tray cutting board",
-  "bamboo cutting board",
   "maple cutting board",
   "BBQ cutting board",
   "butcher block",

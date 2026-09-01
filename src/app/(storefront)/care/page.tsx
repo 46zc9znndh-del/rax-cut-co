@@ -7,7 +7,7 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 export const metadata: Metadata = buildPageMetadata({
   title: "Care & Maintenance",
   description:
-    "How to wash, oil, and maintain your RAX Original Drip Board — bamboo or maple — so it lasts a lifetime.",
+    "How to wash, oil, and maintain your RAX Original Drip Board — maple and hardwood — so it lasts a lifetime.",
   path: "/care",
 });
 

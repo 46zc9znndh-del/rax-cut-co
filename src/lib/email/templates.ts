@@ -14,6 +14,9 @@ const brand = {
   white: "#ffffff",
 };
 
+const brandKicker = "American Hardwood · Integrated Drip Tray";
+const brandTagline = "Crafted for the Cut.";
+
 type TemplateVars = Record<string, string>;
 
 function interpolate(template: string, vars: TemplateVars) {
@@ -36,21 +39,30 @@ function layout(settings: EmailSettings, headline: string, body: string, siteUrl
     <title>${headline}</title>
   </head>
   <body style="margin:0;padding:0;background:${brand.cream};font-family:Georgia,'Times New Roman',serif;color:${brand.ink};">
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">
+      ${email.brandName} — ${brandTagline}
+    </div>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:${brand.cream};padding:32px 16px;">
       <tr>
         <td align="center">
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;background:${brand.white};border:1px solid ${brand.sand};overflow:hidden;">
             <tr>
-              <td style="height:4px;background:${brand.ember};font-size:0;line-height:0;">&nbsp;</td>
+              <td style="height:5px;background:linear-gradient(90deg, ${brand.emberDark} 0%, ${brand.ember} 55%, ${brand.emberDark} 100%);font-size:0;line-height:0;">&nbsp;</td>
             </tr>
             <tr>
               <td style="background:${brand.ink};padding:28px 32px 24px;">
-                <p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:0.32em;text-transform:uppercase;color:${brand.ember};">
+                <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.34em;text-transform:uppercase;color:${brand.ember};">
+                  ${brandKicker}
+                </p>
+                <p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(255,255,255,0.72);">
                   ${email.brandName}
                 </p>
-                <h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:30px;line-height:1.05;letter-spacing:0.1em;text-transform:uppercase;color:${brand.white};">
+                <h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:30px;line-height:1.05;letter-spacing:0.12em;text-transform:uppercase;color:${brand.white};">
                   ${headline}
                 </h1>
+                <p style="margin:14px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,0.55);">
+                  ${brandTagline}
+                </p>
               </td>
             </tr>
             <tr>
@@ -66,8 +78,11 @@ function layout(settings: EmailSettings, headline: string, body: string, siteUrl
                 <p style="margin:0 0 12px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:${brand.muted};">
                   ${email.footerTagline}
                 </p>
+                <p style="margin:0 0 12px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${brand.muted};">
+                  Lifetime guarantee · Built in Washington, USA
+                </p>
                 <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.6;color:${brand.muted};">
-                  <a href="${siteUrl}" style="color:${brand.ember};text-decoration:none;">${siteUrl.replace(/^https?:\/\//, "")}</a>
+                  <a href="${siteUrl}" style="color:${brand.ember};text-decoration:none;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">${siteUrl.replace(/^https?:\/\//, "")}</a>
                 </p>
               </td>
             </tr>
@@ -296,16 +311,40 @@ export function newsletterBroadcastEmail(
 }
 
 export function testEmail(siteUrl: string, settings: EmailSettings = DEFAULT_EMAIL_SETTINGS) {
+  const sampleOrder: Order = {
+    id: "email-preview",
+    orderNumber: "RAX-1001",
+    stripeSessionId: "preview",
+    status: "paid",
+    customerEmail: "customer@example.com",
+    customerName: "RAX Customer",
+    items: [
+      {
+        productId: "rax-original-drip-maple",
+        slug: "rax-original-drip-board-maple",
+        name: "RAX Original Drip Board",
+        wood: "Maple",
+        quantity: 1,
+        unitPrice: 180,
+        lineTotal: 180,
+      },
+    ],
+    subtotal: 180,
+    shipping: 0,
+    total: 180,
+    currency: "USD",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
   const body = `
-    <p style="margin:0 0 20px;">This is a test email from your ${settings.brandName} storefront admin.</p>
-    <p style="margin:0 0 8px;padding:18px;background:#faf8f4;border:1px solid ${brand.sand};line-height:1.65;color:${brand.muted};">
-      If you received this, Resend is connected and your branded template is working.
-    </p>
-    <p style="margin:20px 0 0;color:${brand.muted};">${settings.supportMessage}</p>
+    <p style="margin:0 0 20px;">Your ${settings.brandName} email system is connected. Below is a preview of how order emails look to customers.</p>
+    ${orderBlock(sampleOrder)}
+    <p style="margin:24px 0 0;color:${brand.muted};">${settings.supportMessage}</p>
     ${cta(`${siteUrl}/admin/site`, "Edit Email Copy")}`;
 
   return {
-    subject: `${settings.brandName} — email test`,
+    subject: `${settings.brandName} — branded email test`,
     html: layout(settings, "Email Connected", body, siteUrl),
   };
 }

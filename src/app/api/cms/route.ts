@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { getCmsData } from "@/lib/cms/store";
+import { getFreshCmsData } from "@/lib/cms/store";
 import { stripProductsForStorefront } from "@/lib/products/stock";
 
 export async function GET() {
-  const cms = await getCmsData();
+  const cms = await getFreshCmsData();
   const threshold = cms.site.storeSettings.lowStockThreshold;
 
   return NextResponse.json(

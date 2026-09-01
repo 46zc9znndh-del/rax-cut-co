@@ -47,14 +47,15 @@ export async function isAdminAuthenticated() {
 }
 
 export function verifyAdminPassword(password: string) {
+  const submitted = password.trim();
   const configured = process.env.ADMIN_PASSWORD?.trim();
   if (process.env.NODE_ENV === "production" && !configured) {
     return false;
   }
   if (!configured) {
-    return password === "rax-admin";
+    return submitted === "rax-admin";
   }
-  return password === configured;
+  return submitted === configured;
 }
 
 export function sessionCookieOptions() {

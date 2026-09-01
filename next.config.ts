@@ -60,6 +60,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/shop/rax-original-drip-board-bamboo",
+        destination: "/shop/rax-original-drip-board-maple",
+        permanent: true,
+      },
+      {
         source: "/:path*",
         has: [{ type: "host", value: `www.${SITE_DOMAIN}` }],
         destination: `https://${SITE_DOMAIN}/:path*`,

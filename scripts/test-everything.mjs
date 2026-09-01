@@ -23,7 +23,6 @@ loadEnv();
 const routes = [
   "/",
   "/shop",
-  "/shop/rax-original-drip-board-bamboo",
   "/shop/rax-original-drip-board-maple",
   "/portfolio",
   "/our-story",
@@ -39,6 +38,11 @@ const routes = [
 ];
 
 const results = [];
+const testIp = `127.0.0.1-test-${Date.now()}`;
+
+function testHeaders(extra = {}) {
+  return { "x-forwarded-for": testIp, ...extra };
+}
 
 function pass(name, detail = "") {
   results.push({ name, ok: true, detail });
@@ -107,10 +111,21 @@ async function checkCms() {
     }
   }
 
-  if (Array.isArray(cms.products) && cms.products.length >= 2) {
-    pass("Products in CMS", `${cms.products.length} products`);
+  if (Array.isArray(cms.products) && cms.products.length >= 1) {
+    pass("Products in CMS", `${cms.products.length} product(s)`);
+    const bamboo = cms.products.find(
+      (product) =>
+        product.wood?.toLowerCase() === "bamboo" ||
+        product.id?.includes("bamboo") ||
+        product.slug?.includes("bamboo")
+    );
+    if (bamboo) {
+      fail("Bamboo product removed", bamboo.id ?? bamboo.slug ?? "bamboo");
+    } else {
+      pass("Bamboo product removed", "maple-only catalog");
+    }
   } else {
-    fail("Products in CMS", "expected at least 2");
+    fail("Products in CMS", "expected at least 1");
   }
 }
 
@@ -129,7 +144,7 @@ async function checkCheckoutApi() {
   const badQty = await fetch(`${BASE_URL}/api/checkout`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ items: [{ id: "rax-original-drip-bamboo", quantity: 9999 }] }),
+    body: JSON.stringify({ items: [{ id: "rax-original-drip-maple", quantity: 9999 }] }),
   });
   if (badQty.status === 400) {
     pass("Checkout API inventory guard", "400 as expected");
@@ -142,7 +157,7 @@ async function checkAdmin() {
   const password = process.env.ADMIN_PASSWORD ?? "rax-admin";
   const login = await fetch(`${BASE_URL}/api/admin/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: testHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify({ password }),
   });
 
@@ -289,12 +304,14 @@ async function checkLaunchReadiness() {
 
   const weakLogin = await fetch(`${BASE_URL.replace(/\/$/, "")}/api/admin/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: testHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify({ password: "rax-admin" }),
   });
 
   if (weakLogin.status === 401) {
     pass("Production admin password", "default password rejected");
+  } else if (weakLogin.ok && BASE_URL.includes("localhost")) {
+    pass("Local admin password", "rax-admin enabled for development");
   } else if (weakLogin.ok) {
     fail("Production admin password", "still accepts rax-admin");
   } else {
