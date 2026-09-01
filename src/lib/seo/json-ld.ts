@@ -1,6 +1,8 @@
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/lib/seo/metadata";
-import type { Product } from "@/types";
+import type { Product, StorefrontProduct } from "@/types";
+
+type ProductSchemaInput = Product | StorefrontProduct;
 
 export function organizationSchema() {
   return {
@@ -38,7 +40,7 @@ export function websiteSchema() {
   };
 }
 
-export function productSchema(product: Product) {
+export function productSchema(product: ProductSchemaInput) {
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -71,7 +73,7 @@ export function productSchema(product: Product) {
   };
 }
 
-export function productSchemaJson(product: Product) {
+export function productSchemaJson(product: ProductSchemaInput) {
   const schema = productSchema(product);
   if (!schema.aggregateRating) {
     const { aggregateRating: _removed, ...rest } = schema;

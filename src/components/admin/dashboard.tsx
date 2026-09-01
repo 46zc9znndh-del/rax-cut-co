@@ -217,27 +217,12 @@ export function AdminDashboardPage() {
               <p className="font-display text-[10px] tracking-[0.16em] text-white/50 uppercase">
                 Supabase
               </p>
-              <ul className="mt-2 space-y-1 text-xs">
-                <li>{integrations?.supabase.hasUrl ? "✓ Project URL set" : "✗ Missing NEXT_PUBLIC_SUPABASE_URL"}</li>
-                <li>
-                  {integrations?.supabase.hasPublishableKey
-                    ? "✓ Publishable key set"
-                    : "✗ Missing publishable key"}
-                </li>
-                <li>
-                  {integrations?.supabase.hasSecretKey ? "✓ Secret key set" : "✗ Missing secret key"}
-                </li>
-                <li>
-                  {integrations?.supabase.ready
-                    ? "✓ Supabase orders active"
-                    : "Orders fall back to memory/file until URL + SQL schema are done"}
-                </li>
-              </ul>
+              <p className="mt-2 text-xs">
+                {integrations?.supabase.ready
+                  ? "Connected — CMS, orders, and image uploads are live."
+                  : "Not connected — check env vars in Vercel and redeploy."}
+              </p>
             </div>
-            <p className="text-xs text-white/50">
-              Add the project URL in Vercel env vars, run <code className="text-white/70">supabase/schema.sql</code>{" "}
-              in Supabase SQL Editor, then redeploy.
-            </p>
           </div>
         </AdminPanel>
 

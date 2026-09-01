@@ -9,7 +9,7 @@ import { getCmsData } from "@/lib/cms/store";
 import { organizationSchema, websiteSchema } from "@/lib/seo/json-ld";
 import { StoreSettingsProvider } from "@/lib/store-settings-context";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 export default async function StorefrontLayout({
   children,

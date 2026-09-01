@@ -8,6 +8,7 @@ const oswald = Oswald({
   subsets: ["latin"],
   variable: "--font-oswald",
   display: "swap",
+  preload: true,
 });
 
 const barlow = Barlow({

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import fs from "node:fs";
 import path from "node:path";
 import { isAdminAuthenticated } from "@/lib/cms/auth";
+import { invalidatePublicImages } from "@/lib/cms/store";
 import { uploadImageToSupabase } from "@/lib/cms/store-supabase";
 import { isSupabaseEnabled } from "@/lib/supabase/config";
 
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
 
     if (isSupabaseEnabled()) {
       const url = await uploadImageToSupabase(file);
+      invalidatePublicImages();
       return NextResponse.json({ url });
     }
 
@@ -42,6 +44,7 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(await file.arrayBuffer());
     fs.writeFileSync(path.join(uploadsDir, filename), buffer);
 
+    invalidatePublicImages();
     return NextResponse.json({ url: `/images/uploads/${filename}` });
   } catch (error) {
     console.error("Upload error:", error);

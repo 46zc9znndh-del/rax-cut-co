@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/seo/json-ld";
-import { getProduct, getProducts, getStorefrontProducts } from "@/lib/products";
+import { getCmsData } from "@/lib/cms/store";
+import { getStorefrontProductsFromCms } from "@/lib/products";
 import { ProductDetail } from "@/components/product/product-detail";
 import { buildProductMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, productSchemaJson } from "@/lib/seo/json-ld";
 
 export async function generateStaticParams() {
-  const products = await getProducts();
+  const products = getStorefrontProductsFromCms(await getCmsData());
   return products.map((p) => ({ slug: p.slug }));
 }
 
@@ -16,7 +17,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const product = getStorefrontProductsFromCms(await getCmsData()).find(
+    (item) => item.slug === slug
+  );
   if (!product) {
     return { title: "Product Not Found" };
   }
@@ -29,8 +32,8 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const products = await getStorefrontProducts();
-  const product = await getProduct(slug);
+  const products = getStorefrontProductsFromCms(await getCmsData());
+  const product = products.find((item) => item.slug === slug);
 
   return (
     <>

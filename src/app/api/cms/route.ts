@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { getFreshCmsData } from "@/lib/cms/store";
+import { getCmsData } from "@/lib/cms/store";
 import { stripProductsForStorefront } from "@/lib/products/stock";
 
 export async function GET() {
-  const cms = await getFreshCmsData();
+  const cms = await getCmsData();
   const threshold = cms.site.storeSettings.lowStockThreshold;
 
   return NextResponse.json(
@@ -13,7 +13,7 @@ export async function GET() {
     },
     {
       headers: {
-        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+        "Cache-Control": "private, max-age=0, must-revalidate",
       },
     }
   );

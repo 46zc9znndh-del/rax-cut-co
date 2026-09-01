@@ -79,11 +79,13 @@ export async function listSupabaseImages(): Promise<string[]> {
     });
     if (error || !data) return;
 
+    const nested: Promise<void>[] = [];
+
     for (const entry of data) {
       if (!entry.name || entry.name === ".emptyFolderPlaceholder") continue;
       const nextPath = prefix ? `${prefix}/${entry.name}` : entry.name;
       if (entry.id === null) {
-        await walk(nextPath);
+        nested.push(walk(nextPath));
         continue;
       }
 
@@ -92,6 +94,8 @@ export async function listSupabaseImages(): Promise<string[]> {
       } = supabase.storage.from("site-images").getPublicUrl(nextPath);
       urls.add(publicUrl);
     }
+
+    await Promise.all(nested);
   }
 
   await walk("");

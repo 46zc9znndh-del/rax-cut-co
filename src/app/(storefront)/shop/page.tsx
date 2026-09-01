@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ShopCatalog } from "@/components/product/shop-catalog";
 import { getCmsData } from "@/lib/cms/store";
-import { getStorefrontProducts } from "@/lib/products";
+import { getStorefrontProductsFromCms } from "@/lib/products";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -18,9 +18,9 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function ShopPage() {
-  const { site } = await getCmsData();
-  const { shopPage } = site;
-  const products = await getStorefrontProducts();
+  const cms = await getCmsData();
+  const { shopPage } = cms.site;
+  const products = getStorefrontProductsFromCms(cms);
 
   return (
     <section className="bg-white">

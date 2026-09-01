@@ -6,16 +6,21 @@ import { stripProductsForStorefront } from "@/lib/products/stock";
 
 export { FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
 
+type CmsSnapshot = Awaited<ReturnType<typeof getCmsData>>;
+
+export function getStorefrontProductsFromCms(cms: CmsSnapshot): StorefrontProduct[] {
+  return stripProductsForStorefront(
+    cms.products,
+    cms.site.storeSettings.lowStockThreshold
+  );
+}
+
 export async function getProducts(): Promise<Product[]> {
   return (await getCmsData()).products;
 }
 
 export async function getStorefrontProducts(): Promise<StorefrontProduct[]> {
-  const cms = await getCmsData();
-  return stripProductsForStorefront(
-    cms.products,
-    cms.site.storeSettings.lowStockThreshold
-  );
+  return getStorefrontProductsFromCms(await getCmsData());
 }
 
 export async function getProduct(slug: string) {
@@ -31,7 +36,9 @@ export async function getProductById(id: string) {
 }
 
 export async function getFeaturedProducts() {
-  return (await getStorefrontProducts()).filter((p) => p.category === "board");
+  return getStorefrontProductsFromCms(await getCmsData()).filter(
+    (product) => product.category === "board"
+  );
 }
 
 export async function searchProducts(query: string) {

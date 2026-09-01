@@ -10,10 +10,12 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const [cms, images] = await Promise.all([getFreshCmsData(), listPublicImages()]);
+
   return NextResponse.json({
-    cms: await getFreshCmsData(),
-    images: await listPublicImages(),
-    productImages: productImageLibrary(await listPublicImages()),
+    cms,
+    images,
+    productImages: productImageLibrary(images),
   });
 }
 

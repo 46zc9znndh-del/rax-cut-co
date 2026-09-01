@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { unstable_cache, revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import { cache } from "react";
 import "server-only";
 import { isSupabaseEnabled } from "@/lib/supabase/config";
@@ -13,6 +13,7 @@ import {
 import type { CmsData } from "./types";
 
 const CMS_PATH = path.join(process.cwd(), "data", "cms.json");
+const CMS_CACHE_SECONDS = 300;
 
 let fileCache: CmsData | null = null;
 let fileCacheMtime = 0;
@@ -60,7 +61,7 @@ async function loadCmsData(): Promise<CmsData> {
 }
 
 const getCachedCmsData = unstable_cache(loadCmsData, ["rax-cms-document"], {
-  revalidate: 60,
+  revalidate: CMS_CACHE_SECONDS,
   tags: ["cms"],
 });
 
@@ -68,6 +69,12 @@ export const getCmsData = cache(getCachedCmsData);
 
 export async function getFreshCmsData(): Promise<CmsData> {
   return loadCmsData();
+}
+
+function revalidateStorefront() {
+  revalidateTag("cms", "max");
+  revalidateTag("cms-images", "max");
+  revalidatePath("/", "layout");
 }
 
 export async function saveCmsData(data: CmsData): Promise<CmsData> {
@@ -80,7 +87,7 @@ export async function saveCmsData(data: CmsData): Promise<CmsData> {
     saved = writeFile(data);
   }
 
-  revalidateTag("cms", "max");
+  revalidateStorefront();
   return saved;
 }
 
@@ -104,7 +111,7 @@ function listLocalImages(): string[] {
   return files.sort();
 }
 
-export async function listPublicImages(): Promise<string[]> {
+async function loadPublicImages(): Promise<string[]> {
   const local = listLocalImages();
 
   if (!isSupabaseEnabled()) {
@@ -118,6 +125,19 @@ export async function listPublicImages(): Promise<string[]> {
     console.warn("Supabase image list failed:", error);
     return local;
   }
+}
+
+const getCachedPublicImages = unstable_cache(loadPublicImages, ["rax-public-images"], {
+  revalidate: CMS_CACHE_SECONDS,
+  tags: ["cms-images"],
+});
+
+export async function listPublicImages(): Promise<string[]> {
+  return getCachedPublicImages();
+}
+
+export function invalidatePublicImages() {
+  revalidateTag("cms-images", "max");
 }
 
 export function getCmsBackendLabel() {
