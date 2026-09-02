@@ -111,6 +111,7 @@ export const DEFAULT_STORE_SETTINGS: StoreSettings = {
   standardShippingRate: 18,
   lowStockThreshold: 10,
   lowStockMessage: "Limited stock — order soon",
+  coupons: [],
 };
 
 export const DEFAULT_SITE_POPUP: SitePopupSettings = {
@@ -169,6 +170,7 @@ export function withSiteDefaults(site: SiteSettings): SiteSettings {
     storeSettings: {
       ...DEFAULT_STORE_SETTINGS,
       ...(site.storeSettings ?? {}),
+      coupons: site.storeSettings?.coupons ?? DEFAULT_STORE_SETTINGS.coupons,
     },
     popup: {
       ...DEFAULT_SITE_POPUP,

@@ -38,6 +38,8 @@ export type Order = {
   subtotal: number;
   shipping: number;
   total: number;
+  couponCode?: string;
+  discount?: number;
   currency: string;
   trackingNumber?: string;
   adminNotes?: string;
@@ -74,6 +76,34 @@ export type AdminDashboardStats = {
     wood: string;
     inventory: number;
   }>;
+  couponSales: CouponSalesStat[];
+  productSales: ProductSalesStat[];
+};
+
+export type CouponSalesStat = {
+  code: string;
+  label: string;
+  orderCount: number;
+  revenue: number;
+  discountTotal: number;
+  stripeSynced: boolean;
+};
+
+export type ProductSalesStat = {
+  productId: string;
+  name: string;
+  wood: string;
+  unitsSold: number;
+  revenue: number;
+  stripeSynced: boolean;
+};
+
+export type SalesStats = {
+  couponSales: CouponSalesStat[];
+  productSales: ProductSalesStat[];
+  ordersWithCoupons: number;
+  totalDiscountGiven: number;
+  totalRevenue: number;
 };
 
 export const ORDER_STATUSES: OrderStatus[] = [

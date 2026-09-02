@@ -5,6 +5,7 @@ export const DEFAULT_STORE_SETTINGS: StoreSettings = {
   standardShippingRate: 18,
   lowStockThreshold: 10,
   lowStockMessage: "Limited stock — order soon",
+  coupons: [],
 };
 
 /** @deprecated Use useStoreSettings() or getStoreSettings() */

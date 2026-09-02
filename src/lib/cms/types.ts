@@ -113,11 +113,24 @@ export type ReviewsSettings = {
   items: Review[];
 };
 
+export type Coupon = {
+  id: string;
+  code: string;
+  label: string;
+  percentOff: number;
+  startsAt: string;
+  endsAt: string;
+  enabled: boolean;
+  stripeCouponId?: string;
+  stripePromotionCodeId?: string;
+};
+
 export type StoreSettings = {
   freeShippingThreshold: number;
   standardShippingRate: number;
   lowStockThreshold: number;
   lowStockMessage: string;
+  coupons: Coupon[];
 };
 
 export type SitePopupSettings = {

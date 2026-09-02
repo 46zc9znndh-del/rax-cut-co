@@ -289,8 +289,20 @@ export function OrdersAdminPage() {
                 <div className="mt-4 space-y-1 text-sm">
                   <div className="flex justify-between text-white/60">
                     <span>Subtotal</span>
-                    <span>{formatCurrency(selectedOrder.subtotal)}</span>
+                    <span>
+                      {formatCurrency(
+                        selectedOrder.discount
+                          ? selectedOrder.subtotal + selectedOrder.discount
+                          : selectedOrder.subtotal
+                      )}
+                    </span>
                   </div>
+                  {selectedOrder.discount && selectedOrder.couponCode ? (
+                    <div className="flex justify-between text-rax-ember">
+                      <span>Promo ({selectedOrder.couponCode})</span>
+                      <span>-{formatCurrency(selectedOrder.discount)}</span>
+                    </div>
+                  ) : null}
                   <div className="flex justify-between text-white/60">
                     <span>Shipping</span>
                     <span>{formatCurrency(selectedOrder.shipping)}</span>

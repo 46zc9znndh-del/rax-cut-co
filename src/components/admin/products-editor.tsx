@@ -111,8 +111,8 @@ export function ProductsAdminPage() {
     <AdminShell title="Products">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <p className="text-sm text-white/60">
-          Add, edit, or remove products. Set price, stock, photos, and URL slug. First photo is the
-          main image. Click Save Changes when done.
+          Add, edit, or remove products. Set price, stock, photos, and URL slug. Products sync to
+          Stripe Products and Prices when you save.
         </p>
         <Button type="button" onClick={addProduct}>
           Add Product
@@ -136,7 +136,10 @@ export function ProductsAdminPage() {
 
           return (
             <AdminPanel key={product.id} title={`${product.name} — ${product.wood}`}>
-              <div className="mb-4 flex justify-end">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <p className="text-xs tracking-[0.14em] text-white/50 uppercase">
+                  {product.stripePriceId ? "Stripe synced" : "Stripe pending"}
+                </p>
                 <Button
                   type="button"
                   variant="dark"

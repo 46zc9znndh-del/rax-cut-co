@@ -10,6 +10,7 @@ import {
   listSupabaseImages,
   saveCmsToSupabase,
 } from "./store-supabase";
+import { syncCmsCatalogToStripe } from "@/lib/stripe/sync";
 import type { CmsData } from "./types";
 
 const CMS_PATH = path.join(process.cwd(), "data", "cms.json");
@@ -85,6 +86,40 @@ export async function saveCmsData(data: CmsData): Promise<CmsData> {
     fileCache = saved;
   } else {
     saved = writeFile(data);
+  }
+
+  try {
+    const sync = await syncCmsCatalogToStripe(saved);
+    const couponsChanged =
+      JSON.stringify(sync.coupons) !== JSON.stringify(saved.site.storeSettings.coupons);
+    const productsChanged = JSON.stringify(sync.products) !== JSON.stringify(saved.products);
+
+    if (couponsChanged || productsChanged) {
+      saved = {
+        ...saved,
+        products: sync.products,
+        site: {
+          ...saved.site,
+          storeSettings: {
+            ...saved.site.storeSettings,
+            coupons: sync.coupons,
+          },
+        },
+      };
+
+      if (isSupabaseEnabled()) {
+        saved = await saveCmsToSupabase(saved);
+        fileCache = saved;
+      } else {
+        saved = writeFile(saved);
+      }
+    }
+
+    if (sync.errors.length) {
+      console.warn("Stripe catalog sync warnings:", sync.errors);
+    }
+  } catch (error) {
+    console.warn("Stripe catalog sync failed:", error);
   }
 
   revalidateStorefront();

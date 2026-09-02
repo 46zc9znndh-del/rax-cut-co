@@ -124,12 +124,23 @@ function renderItems(order: Order) {
 }
 
 function renderTotals(order: Order) {
+  const preDiscountSubtotal =
+    order.discount && order.discount > 0 ? order.subtotal + order.discount : order.subtotal;
+
   return `
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:8px;font-size:14px;">
       <tr>
         <td style="padding:8px 0;color:${brand.muted};">Subtotal</td>
-        <td align="right">${formatCurrency(order.subtotal)}</td>
+        <td align="right">${formatCurrency(preDiscountSubtotal)}</td>
       </tr>
+      ${
+        order.discount && order.couponCode
+          ? `<tr>
+        <td style="padding:8px 0;color:${brand.muted};">Promo (${order.couponCode})</td>
+        <td align="right" style="color:${brand.ember};">-${formatCurrency(order.discount)}</td>
+      </tr>`
+          : ""
+      }
       <tr>
         <td style="padding:8px 0;color:${brand.muted};">Shipping</td>
         <td align="right">${order.shipping === 0 ? "Free" : formatCurrency(order.shipping)}</td>

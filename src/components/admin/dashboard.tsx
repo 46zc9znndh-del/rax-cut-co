@@ -148,7 +148,7 @@ export function AdminDashboardPage() {
           Store overview — orders, revenue, and inventory alerts.
         </p>
         <Button asChild variant="outline" size="sm">
-          <Link href="/admin/orders">View All Orders</Link>
+          <Link href="/admin/sales">Sales Tracker</Link>
         </Button>
       </div>
 
@@ -160,6 +160,62 @@ export function AdminDashboardPage() {
           label="Revenue This Month"
           value={formatCurrency(stats.revenueThisMonth)}
         />
+      </div>
+
+      <div className="mt-8 grid gap-6 xl:grid-cols-2">
+        <AdminPanel title="Top Coupons">
+          {stats.couponSales.filter((coupon) => coupon.orderCount > 0).length ? (
+            <div className="space-y-3">
+              {stats.couponSales
+                .filter((coupon) => coupon.orderCount > 0)
+                .slice(0, 5)
+                .map((coupon) => (
+                  <div
+                    key={coupon.code}
+                    className="flex items-center justify-between border-b border-white/10 pb-3 last:border-0"
+                  >
+                    <div>
+                      <p className="font-mono text-sm text-rax-ember">{coupon.code}</p>
+                      <p className="text-xs text-white/50">
+                        {coupon.orderCount} orders · {formatCurrency(coupon.discountTotal)} off
+                      </p>
+                    </div>
+                    <span className="font-display text-sm">{formatCurrency(coupon.revenue)}</span>
+                  </div>
+                ))}
+            </div>
+          ) : (
+            <p className="text-sm text-white/50">No coupon sales yet.</p>
+          )}
+          <Button asChild variant="outline" size="sm" className="mt-4">
+            <Link href="/admin/sales">Open Sales Tracker</Link>
+          </Button>
+        </AdminPanel>
+
+        <AdminPanel title="Top Products">
+          {stats.productSales.length ? (
+            <div className="space-y-3">
+              {stats.productSales.slice(0, 5).map((product) => (
+                <div
+                  key={product.productId}
+                  className="flex items-center justify-between border-b border-white/10 pb-3 last:border-0"
+                >
+                  <div>
+                    <p className="font-display text-sm tracking-[0.08em] uppercase">
+                      {product.name}
+                    </p>
+                    <p className="text-xs text-white/50">
+                      {product.unitsSold} sold · {product.wood}
+                    </p>
+                  </div>
+                  <span className="font-display text-sm">{formatCurrency(product.revenue)}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-white/50">No product sales yet.</p>
+          )}
+        </AdminPanel>
       </div>
 
       <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -228,6 +284,9 @@ export function AdminDashboardPage() {
 
         <AdminPanel title="Quick Actions">
           <div className="flex flex-col gap-3">
+            <Button asChild variant="outline">
+              <Link href="/admin/sales">Sales Tracker</Link>
+            </Button>
             <Button asChild variant="outline">
               <Link href="/admin/orders">Manage Orders</Link>
             </Button>

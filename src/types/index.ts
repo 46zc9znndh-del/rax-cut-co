@@ -21,6 +21,8 @@ export type Product = {
   features: string[];
   inStock: boolean;
   category: "board" | "gear";
+  stripeProductId?: string;
+  stripePriceId?: string;
 };
 
 /** Storefront-safe product — exact inventory is admin-only. */

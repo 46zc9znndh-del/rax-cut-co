@@ -3,6 +3,7 @@ import path from "node:path";
 import "server-only";
 import { isSupabaseOrdersEnabled } from "@/lib/supabase/config";
 import { getCmsData, saveCmsData } from "@/lib/cms/store";
+import { buildSalesStats } from "./sales-stats";
 import type {
   AdminDashboardStats,
   Order,
@@ -228,14 +229,23 @@ export async function updateOrder(id: string, patch: OrderUpdateInput) {
 }
 
 export async function getAdminDashboardStats(): Promise<AdminDashboardStats> {
+  const cms = await getCmsData();
   const lowStock = await getLowStockProducts();
+  const products = cms.products;
+  const coupons = cms.site.storeSettings.coupons ?? [];
 
   if (isSupabaseOrdersEnabled()) {
-    return getAdminDashboardStatsFromSupabase(lowStock);
+    return getAdminDashboardStatsFromSupabase(lowStock, products, coupons);
   }
 
   const orders = await getOrders();
-  return buildDashboardStats(orders, lowStock);
+  return buildDashboardStats(orders, lowStock, products, coupons);
+}
+
+export async function getSalesStats() {
+  const cms = await getCmsData();
+  const orders = await getOrders();
+  return buildSalesStats(orders, cms.products, cms.site.storeSettings.coupons ?? []);
 }
 
 export function getOrdersBackendLabel() {

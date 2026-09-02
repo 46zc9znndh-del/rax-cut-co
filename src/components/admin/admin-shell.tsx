@@ -10,8 +10,10 @@ import { uploadAdminImage } from "@/lib/images/admin-upload-client";
 
 const ADMIN_LINKS = [
   { href: "/admin/dashboard", label: "Dashboard" },
+  { href: "/admin/sales", label: "Sales" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/products", label: "Products" },
+  { href: "/admin/coupons", label: "Coupons" },
   { href: "/admin/site", label: "Site Editor" },
   { href: "/admin/settings", label: "Settings" },
 ] as const;

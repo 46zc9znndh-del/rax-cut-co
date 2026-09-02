@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { useStoreSettings } from "@/lib/store-settings-context";
 import {
@@ -14,17 +15,80 @@ import {
 } from "@/store/cart-store";
 import { formatCurrency } from "@/lib/utils";
 
+type AppliedCoupon = {
+  code: string;
+  percentOff: number;
+  discount: number;
+};
+
 function CheckoutContent() {
   const { items } = useCartStore();
   const subtotal = useCartSubtotal();
   const { freeShippingThreshold, standardShippingRate } = useStoreSettings();
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const discountedSubtotal = appliedCoupon
+    ? Math.max(0, subtotal - appliedCoupon.discount)
+    : subtotal;
   const shipping =
-    subtotal >= freeShippingThreshold || subtotal === 0 ? 0 : standardShippingRate;
-  const total = subtotal + shipping;
+    discountedSubtotal >= freeShippingThreshold || discountedSubtotal === 0
+      ? 0
+      : standardShippingRate;
+  const total = discountedSubtotal + shipping;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const canceled = searchParams.get("canceled") === "1";
+
+  async function applyCoupon() {
+    const code = couponInput.trim();
+    if (!code) {
+      setCouponError("Enter a promo code.");
+      return;
+    }
+
+    setCouponLoading(true);
+    setCouponError(null);
+
+    try {
+      const res = await fetch("/api/coupons/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, subtotal }),
+      });
+      const data = (await res.json()) as {
+        ok?: boolean;
+        code?: string;
+        percentOff?: number;
+        discount?: number;
+        error?: string;
+      };
+
+      if (!res.ok || !data.ok || !data.code || data.percentOff == null || data.discount == null) {
+        throw new Error(data.error || "Invalid promo code.");
+      }
+
+      setAppliedCoupon({
+        code: data.code,
+        percentOff: data.percentOff,
+        discount: data.discount,
+      });
+      setCouponInput(data.code);
+    } catch (err) {
+      setAppliedCoupon(null);
+      setCouponError(err instanceof Error ? err.message : "Invalid promo code.");
+    } finally {
+      setCouponLoading(false);
+    }
+  }
+
+  function removeCoupon() {
+    setAppliedCoupon(null);
+    setCouponInput("");
+    setCouponError(null);
+  }
 
   async function startCheckout() {
     setLoading(true);
@@ -38,6 +102,7 @@ function CheckoutContent() {
             id: item.id,
             quantity: item.quantity,
           })),
+          couponCode: appliedCoupon?.code,
         }),
       });
       const data = (await res.json()) as { url?: string; error?: string };
@@ -74,6 +139,41 @@ function CheckoutContent() {
               card details collected there. Free shipping unlocks at{" "}
               {formatCurrency(freeShippingThreshold)}.
             </p>
+
+            <div className="max-w-md space-y-3 border border-rax-sand bg-white p-4">
+              <p className="font-display text-xs tracking-[0.16em] text-rax-muted uppercase">
+                Promo Code
+              </p>
+              <div className="flex gap-2">
+                <Input
+                  value={couponInput}
+                  onChange={(event) => {
+                    setCouponInput(event.target.value.toUpperCase());
+                    setCouponError(null);
+                  }}
+                  placeholder="Enter code"
+                  className="font-mono uppercase"
+                  disabled={Boolean(appliedCoupon)}
+                />
+                {appliedCoupon ? (
+                  <Button type="button" variant="outline" onClick={removeCoupon}>
+                    Remove
+                  </Button>
+                ) : (
+                  <Button type="button" variant="outline" disabled={couponLoading} onClick={applyCoupon}>
+                    {couponLoading ? "Checking…" : "Apply"}
+                  </Button>
+                )}
+              </div>
+              {appliedCoupon ? (
+                <p className="text-sm text-emerald-700">
+                  {appliedCoupon.code} applied — {appliedCoupon.percentOff}% off (
+                  {formatCurrency(appliedCoupon.discount)})
+                </p>
+              ) : null}
+              {couponError ? <p className="text-sm text-red-700">{couponError}</p> : null}
+            </div>
+
             {error && (
               <p className="border border-red-500/40 bg-red-50 px-4 py-3 text-sm text-red-700">
                 {error}
@@ -115,15 +215,23 @@ function CheckoutContent() {
           <p className="mb-2 text-xs tracking-widest text-rax-muted-dark uppercase">
             {shipping === 0
               ? "Free shipping"
-              : `${formatCurrency(freeShippingThreshold - subtotal)} to free shipping`}
+              : `${formatCurrency(Math.max(0, freeShippingThreshold - discountedSubtotal))} to free shipping`}
           </p>
-          <Progress value={Math.min(100, (subtotal / freeShippingThreshold) * 100)} />
+          <Progress
+            value={Math.min(100, (discountedSubtotal / freeShippingThreshold) * 100)}
+          />
         </div>
         <dl className="mt-6 space-y-2 border-t border-white/10 pt-4 text-sm">
           <div className="flex justify-between">
             <dt className="text-rax-muted-dark">Subtotal</dt>
             <dd>{formatCurrency(subtotal)}</dd>
           </div>
+          {appliedCoupon ? (
+            <div className="flex justify-between text-rax-ember">
+              <dt>Promo ({appliedCoupon.code})</dt>
+              <dd>-{formatCurrency(appliedCoupon.discount)}</dd>
+            </div>
+          ) : null}
           <div className="flex justify-between">
             <dt className="text-rax-muted-dark">Est. shipping</dt>
             <dd>{shipping === 0 ? "Free" : formatCurrency(shipping)}</dd>

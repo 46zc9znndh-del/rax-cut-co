@@ -9,6 +9,7 @@ import type {
   OrderUpdateInput,
   ShippingAddress,
 } from "./types";
+import { buildCouponSalesStats, buildProductSalesStats } from "./sales-stats";
 
 type OrderRow = {
   id: string;
@@ -24,6 +25,8 @@ type OrderRow = {
   subtotal: number;
   shipping: number;
   total: number;
+  coupon_code: string | null;
+  discount: number | null;
   currency: string;
   tracking_number: string | null;
   admin_notes: string | null;
@@ -49,6 +52,8 @@ function rowToOrder(row: OrderRow): Order {
     subtotal: Number(row.subtotal),
     shipping: Number(row.shipping),
     total: Number(row.total),
+    couponCode: row.coupon_code ?? undefined,
+    discount: row.discount != null ? Number(row.discount) : undefined,
     currency: row.currency,
     trackingNumber: row.tracking_number ?? undefined,
     adminNotes: row.admin_notes ?? undefined,
@@ -75,6 +80,8 @@ function orderToRow(order: Order): OrderRow {
     subtotal: order.subtotal,
     shipping: order.shipping,
     total: order.total,
+    coupon_code: order.couponCode ?? null,
+    discount: order.discount ?? null,
     currency: order.currency,
     tracking_number: order.trackingNumber ?? null,
     admin_notes: order.adminNotes ?? null,
@@ -224,15 +231,19 @@ export async function updateOrderInSupabase(id: string, patch: OrderUpdateInput)
 }
 
 export async function getAdminDashboardStatsFromSupabase(
-  lowStock: AdminDashboardStats["lowStock"]
+  lowStock: AdminDashboardStats["lowStock"],
+  products: Parameters<typeof buildProductSalesStats>[1],
+  coupons: Parameters<typeof buildCouponSalesStats>[1]
 ): Promise<AdminDashboardStats> {
   const orders = await getOrdersFromSupabase();
-  return buildDashboardStats(orders, lowStock);
+  return buildDashboardStats(orders, lowStock, products, coupons);
 }
 
 export function buildDashboardStats(
   orders: Order[],
-  lowStock: AdminDashboardStats["lowStock"]
+  lowStock: AdminDashboardStats["lowStock"],
+  products: Parameters<typeof buildProductSalesStats>[1] = [],
+  coupons: Parameters<typeof buildCouponSalesStats>[1] = []
 ): AdminDashboardStats {
   const now = new Date();
   const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -261,5 +272,7 @@ export function buildDashboardStats(
     statusCounts,
     recentOrders: orders.slice(0, 6),
     lowStock,
+    couponSales: buildCouponSalesStats(orders, coupons),
+    productSales: buildProductSalesStats(orders, products),
   };
 }

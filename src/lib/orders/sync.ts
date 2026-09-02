@@ -71,6 +71,17 @@ export async function createOrderFromStripeSession(
   const subtotal = (session.amount_subtotal ?? 0) / 100;
   const shipping = (session.total_details?.amount_shipping ?? 0) / 100;
   const total = (session.amount_total ?? 0) / 100;
+  const couponCode = session.metadata?.couponCode?.trim() || undefined;
+  const discountFromMetadata = session.metadata?.discountCents
+    ? Number(session.metadata.discountCents)
+    : 0;
+  const discountFromStripe = (session.total_details?.amount_discount ?? 0) / 100;
+  const discount =
+    couponCode && Number.isFinite(discountFromMetadata) && discountFromMetadata > 0
+      ? discountFromMetadata / 100
+      : discountFromStripe > 0
+        ? discountFromStripe
+        : undefined;
 
   const sessionWithShipping = session as Stripe.Checkout.Session & {
     shipping_details?: {
@@ -101,6 +112,8 @@ export async function createOrderFromStripeSession(
     subtotal,
     shipping,
     total,
+    couponCode,
+    discount,
     currency: (session.currency ?? "usd").toUpperCase(),
   });
 

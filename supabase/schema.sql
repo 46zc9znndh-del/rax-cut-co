@@ -29,6 +29,8 @@ create table if not exists public.orders (
   subtotal numeric(10, 2) not null default 0,
   shipping numeric(10, 2) not null default 0,
   total numeric(10, 2) not null default 0,
+  coupon_code text,
+  discount numeric(10, 2),
   currency text not null default 'USD',
   tracking_number text,
   admin_notes text,
@@ -42,6 +44,9 @@ create table if not exists public.orders (
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
 create index if not exists orders_status_idx on public.orders (status);
 create index if not exists orders_customer_email_idx on public.orders (customer_email);
+
+alter table public.orders add column if not exists coupon_code text;
+alter table public.orders add column if not exists discount numeric(10, 2);
 
 insert into public.app_state (key, value, updated_at)
 values ('orders', jsonb_build_object('nextOrderNumber', 1001), now())
