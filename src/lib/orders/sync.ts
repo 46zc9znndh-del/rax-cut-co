@@ -1,5 +1,6 @@
 import "server-only";
 
+import { after } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { addOrder, getOrderBySessionId } from "./store";
@@ -117,7 +118,14 @@ export async function createOrderFromStripeSession(
     currency: (session.currency ?? "usd").toUpperCase(),
   });
 
-  const { sendOrderEmails } = await import("@/lib/email/send");
-  await sendOrderEmails(order);
+  after(async () => {
+    try {
+      const { sendOrderEmails } = await import("@/lib/email/send");
+      await sendOrderEmails(order);
+    } catch (error) {
+      console.error("Order email send failed:", error);
+    }
+  });
+
   return order;
 }

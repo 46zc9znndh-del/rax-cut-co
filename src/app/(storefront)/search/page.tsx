@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { SearchResults } from "@/components/product/search-results";
-import { searchProducts } from "@/lib/products";
+import { getCmsData } from "@/lib/cms/store";
+import { getStorefrontProductsFromCms } from "@/lib/products";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -12,11 +13,15 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function SearchPage() {
-  const products = await searchProducts("");
+  const cms = await getCmsData();
+  const products = getStorefrontProductsFromCms(cms);
 
   return (
     <Suspense fallback={<div className="px-4 py-20 text-rax-muted">Loading search…</div>}>
-      <SearchResults products={products} />
+      <SearchResults
+        products={products}
+        lowStockMessage={cms.site.storeSettings.lowStockMessage}
+      />
     </Suspense>
   );
 }

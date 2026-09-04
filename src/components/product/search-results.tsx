@@ -6,7 +6,13 @@ import { ProductGrid } from "@/components/product/product-grid";
 import { filterProducts } from "@/lib/search";
 import type { StorefrontProduct } from "@/types";
 
-export function SearchResults({ products }: { products: StorefrontProduct[] }) {
+export function SearchResults({
+  products,
+  lowStockMessage,
+}: {
+  products: StorefrontProduct[];
+  lowStockMessage: string;
+}) {
   const params = useSearchParams();
   const q = params.get("q") ?? "";
   const results = useMemo(() => filterProducts(products, q), [products, q]);
@@ -21,7 +27,7 @@ export function SearchResults({ products }: { products: StorefrontProduct[] }) {
         {results.length} item{results.length === 1 ? "" : "s"}
       </p>
       <div className="mt-10">
-        <ProductGrid products={results} />
+        <ProductGrid products={results} lowStockMessage={lowStockMessage} />
       </div>
     </section>
   );

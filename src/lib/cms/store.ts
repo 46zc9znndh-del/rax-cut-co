@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { after } from "next/server";
 import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import { cache } from "react";
 import "server-only";
@@ -14,7 +15,7 @@ import { syncCmsCatalogToStripe } from "@/lib/stripe/sync";
 import type { CmsData } from "./types";
 
 const CMS_PATH = path.join(process.cwd(), "data", "cms.json");
-const CMS_CACHE_SECONDS = 300;
+const CMS_CACHE_SECONDS = 600;
 
 let fileCache: CmsData | null = null;
 let fileCacheMtime = 0;
@@ -78,7 +79,32 @@ function revalidateStorefront() {
   revalidatePath("/", "layout");
 }
 
-export async function saveCmsData(data: CmsData): Promise<CmsData> {
+async function persistStripeSyncResult(base: CmsData, sync: Awaited<ReturnType<typeof syncCmsCatalogToStripe>>) {
+  const next: CmsData = {
+    ...base,
+    products: sync.products,
+    site: {
+      ...base.site,
+      storeSettings: {
+        ...base.site.storeSettings,
+        coupons: sync.coupons,
+      },
+    },
+  };
+
+  if (isSupabaseEnabled()) {
+    const saved = await saveCmsToSupabase(next);
+    fileCache = saved;
+    return saved;
+  }
+
+  return writeFile(next);
+}
+
+export async function saveCmsData(
+  data: CmsData,
+  options?: { syncStripe?: boolean }
+): Promise<CmsData> {
   let saved: CmsData;
 
   if (isSupabaseEnabled()) {
@@ -88,41 +114,30 @@ export async function saveCmsData(data: CmsData): Promise<CmsData> {
     saved = writeFile(data);
   }
 
-  try {
-    const sync = await syncCmsCatalogToStripe(saved);
-    const couponsChanged =
-      JSON.stringify(sync.coupons) !== JSON.stringify(saved.site.storeSettings.coupons);
-    const productsChanged = JSON.stringify(sync.products) !== JSON.stringify(saved.products);
+  revalidateStorefront();
 
-    if (couponsChanged || productsChanged) {
-      saved = {
-        ...saved,
-        products: sync.products,
-        site: {
-          ...saved.site,
-          storeSettings: {
-            ...saved.site.storeSettings,
-            coupons: sync.coupons,
-          },
-        },
-      };
+  const shouldSync = options?.syncStripe !== false && process.env.STRIPE_SECRET_KEY;
+  if (shouldSync) {
+    after(async () => {
+      try {
+        const sync = await syncCmsCatalogToStripe(saved);
+        const couponsChanged =
+          JSON.stringify(sync.coupons) !== JSON.stringify(saved.site.storeSettings.coupons);
+        const productsChanged = JSON.stringify(sync.products) !== JSON.stringify(saved.products);
 
-      if (isSupabaseEnabled()) {
-        saved = await saveCmsToSupabase(saved);
-        fileCache = saved;
-      } else {
-        saved = writeFile(saved);
+        if (couponsChanged || productsChanged) {
+          await persistStripeSyncResult(saved, sync);
+        }
+
+        if (sync.errors.length) {
+          console.warn("Stripe catalog sync warnings:", sync.errors);
+        }
+      } catch (error) {
+        console.warn("Stripe catalog sync failed:", error);
       }
-    }
-
-    if (sync.errors.length) {
-      console.warn("Stripe catalog sync warnings:", sync.errors);
-    }
-  } catch (error) {
-    console.warn("Stripe catalog sync failed:", error);
+    });
   }
 
-  revalidateStorefront();
   return saved;
 }
 

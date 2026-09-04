@@ -3,36 +3,30 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductCard } from "@/components/product/product-card";
 import { useCartStore } from "@/store/cart-store";
-import { useStoreSettings } from "@/lib/store-settings-context";
 import { formatCurrency, cn } from "@/lib/utils";
 import type { StorefrontProduct } from "@/types";
 
 export function ProductDetail({
-  slug,
-  products,
+  product: item,
+  variants,
+  related,
+  freeShippingThreshold,
+  lowStockMessage,
 }: {
-  slug: string;
-  products: StorefrontProduct[];
+  product: StorefrontProduct;
+  variants: StorefrontProduct[];
+  related: StorefrontProduct[];
+  freeShippingThreshold: number;
+  lowStockMessage: string;
 }) {
-  const product = products.find((item) => item.slug === slug);
   const addItem = useCartStore((s) => s.addItem);
   const openCart = useCartStore((s) => s.openCart);
-  const { freeShippingThreshold, lowStockMessage } = useStoreSettings();
   const [active, setActive] = useState(0);
 
-  if (!product) {
-    notFound();
-  }
-
-  const item = product;
-
-  const variants = products.filter((p) => p.name === item.name);
-  const related = products.filter((p) => p.id !== item.id);
   const gallery = item.images.filter(
     (src, index, all) => all.indexOf(src) === index
   );
@@ -218,7 +212,11 @@ export function ProductDetail({
             </h2>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((relatedProduct) => (
-                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+                <ProductCard
+                  key={relatedProduct.id}
+                  product={relatedProduct}
+                  lowStockMessage={lowStockMessage}
+                />
               ))}
             </div>
           </div>

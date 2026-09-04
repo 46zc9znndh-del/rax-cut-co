@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { getProductById } from "@/lib/products";
 import { getCmsData } from "@/lib/cms/store";
+import { getStorefrontProductsFromCms } from "@/lib/products";
 import { applyPercentDiscountToCents, resolveCoupon } from "@/lib/coupons";
 import { getSiteOrigin } from "@/lib/site";
 import { getStripe, toStripeCents } from "@/lib/stripe";
@@ -13,7 +13,7 @@ type CartLine = {
 };
 
 function buildLineItem(
-  product: NonNullable<Awaited<ReturnType<typeof getProductById>>>,
+  product: import("@/types").Product,
   quantity: number,
   origin: string,
   unitAmountCents: number
@@ -69,6 +69,7 @@ export async function POST(request: Request) {
 
     const cms = await getCmsData();
     const { freeShippingThreshold, standardShippingRate } = cms.site.storeSettings;
+    const productMap = new Map(cms.products.map((product) => [product.id, product]));
 
     let percentOff: number | null = null;
     let appliedCode: string | null = null;
@@ -93,7 +94,7 @@ export async function POST(request: Request) {
     let preDiscountSubtotalCents = 0;
 
     for (const item of items) {
-      const product = await getProductById(item.id);
+      const product = productMap.get(item.id);
       if (!product || !product.inStock) {
         return NextResponse.json(
           { error: `Product unavailable: ${item.id}` },

@@ -2,6 +2,7 @@ import { Hero } from "@/components/home/hero";
 import { CollectionBar } from "@/components/home/collection-bar";
 import { TrustBadges } from "@/components/home/trust-badges";
 import { FeaturedProducts } from "@/components/home/featured-products";
+import { HomeVideo } from "@/components/home/home-video";
 import { FeatureSpotlight } from "@/components/home/feature-spotlight";
 import { CareGuide } from "@/components/home/care-guide";
 import { Reviews } from "@/components/home/reviews";
@@ -29,7 +30,12 @@ export default async function Home() {
     <>
       <Hero settings={cms.site.hero} />
       <CollectionBar settings={cms.site.collectionBar} />
-      <FeaturedProducts settings={cms.site.featuredSection} products={products} />
+      <FeaturedProducts
+        settings={cms.site.featuredSection}
+        products={products}
+        lowStockMessage={cms.site.storeSettings.lowStockMessage}
+      />
+      <HomeVideo poster="/images/portfolio/steak-rest.jpg" />
       <PortfolioGallery settings={cms.site.portfolio} featuredOnly />
       <TrustBadges badges={cms.site.trustBadges} />
       <FeatureSpotlight sections={cms.site.featureSections} />

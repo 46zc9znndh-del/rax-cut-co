@@ -31,7 +31,10 @@ export default async function ShopPage() {
         </h1>
         <p className="mt-4 max-w-xl text-rax-muted">{shopPage.description}</p>
         <div className="mt-12">
-          <ShopCatalog products={products} />
+          <ShopCatalog
+            products={products}
+            lowStockMessage={cms.site.storeSettings.lowStockMessage}
+          />
         </div>
       </div>
     </section>

@@ -217,30 +217,27 @@ export async function syncCmsCatalogToStripe(cms: CmsData): Promise<StripeSyncRe
 
   const origin = getSiteUrl();
   const errors: string[] = [];
-  const products: Product[] = [];
-  const coupons: Coupon[] = [];
 
-  for (const product of cms.products) {
-    try {
-      products.push(await syncProduct(product, origin));
-    } catch (error) {
-      errors.push(
-        `Product ${product.name}: ${error instanceof Error ? error.message : "sync failed"}`
-      );
-      products.push(product);
-    }
-  }
+  const productResults = await Promise.allSettled(
+    cms.products.map((product) => syncProduct(product, origin))
+  );
+  const products = productResults.map((result, index) => {
+    if (result.status === "fulfilled") return result.value;
+    errors.push(
+      `Product ${cms.products[index].name}: ${result.reason instanceof Error ? result.reason.message : "sync failed"}`
+    );
+    return cms.products[index];
+  });
 
-  for (const coupon of cms.site.storeSettings.coupons ?? []) {
-    try {
-      coupons.push(await syncCoupon(coupon));
-    } catch (error) {
-      errors.push(
-        `Coupon ${coupon.code}: ${error instanceof Error ? error.message : "sync failed"}`
-      );
-      coupons.push(coupon);
-    }
-  }
+  const couponList = cms.site.storeSettings.coupons ?? [];
+  const couponResults = await Promise.allSettled(couponList.map((coupon) => syncCoupon(coupon)));
+  const coupons = couponResults.map((result, index) => {
+    if (result.status === "fulfilled") return result.value;
+    errors.push(
+      `Coupon ${couponList[index].code}: ${result.reason instanceof Error ? result.reason.message : "sync failed"}`
+    );
+    return couponList[index];
+  });
 
   return { products, coupons, errors };
 }

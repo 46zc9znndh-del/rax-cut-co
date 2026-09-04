@@ -5,7 +5,13 @@ import { ProductGrid } from "@/components/product/product-grid";
 import { cn } from "@/lib/utils";
 import type { StorefrontProduct } from "@/types";
 
-export function ShopCatalog({ products }: { products: StorefrontProduct[] }) {
+export function ShopCatalog({
+  products,
+  lowStockMessage,
+}: {
+  products: StorefrontProduct[];
+  lowStockMessage: string;
+}) {
   const filters = useMemo(() => {
     const woods = [...new Set(products.map((product) => product.wood).filter(Boolean))].sort();
     return ["All", ...woods] as const;
@@ -38,7 +44,7 @@ export function ShopCatalog({ products }: { products: StorefrontProduct[] }) {
           ))}
         </div>
       ) : null}
-      <ProductGrid products={visible} />
+      <ProductGrid products={visible} lowStockMessage={lowStockMessage} />
     </>
   );
 }

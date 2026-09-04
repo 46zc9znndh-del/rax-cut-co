@@ -15,17 +15,20 @@ export async function POST() {
     const cms = await getFreshCmsData();
     const sync = await syncCmsCatalogToStripe(cms);
 
-    const saved = await saveCmsData({
-      ...cms,
-      products: sync.products,
-      site: {
-        ...cms.site,
-        storeSettings: {
-          ...cms.site.storeSettings,
-          coupons: sync.coupons,
+    const saved = await saveCmsData(
+      {
+        ...cms,
+        products: sync.products,
+        site: {
+          ...cms.site,
+          storeSettings: {
+            ...cms.site.storeSettings,
+            coupons: sync.coupons,
+          },
         },
       },
-    });
+      { syncStripe: false }
+    );
 
     return NextResponse.json({
       ok: true,

@@ -1,17 +1,17 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
+import { AddToCartButton } from "@/components/product/add-to-cart-button";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useCartStore } from "@/store/cart-store";
-import { useStoreSettings } from "@/lib/store-settings-context";
 import { formatCurrency } from "@/lib/utils";
 import type { StorefrontProduct } from "@/types";
 
-export function ProductCard({ product }: { product: StorefrontProduct }) {
-  const addItem = useCartStore((s) => s.addItem);
-  const { lowStockMessage } = useStoreSettings();
+export function ProductCard({
+  product,
+  lowStockMessage,
+}: {
+  product: StorefrontProduct;
+  lowStockMessage: string;
+}) {
   const posA = product.imagePosition?.[0] ?? "50% 46%";
   const posB = product.imagePosition?.[1] ?? posA;
   const hoverImage = product.images[1] ?? product.images[0];
@@ -71,22 +71,17 @@ export function ProductCard({ product }: { product: StorefrontProduct }) {
               <p className="text-xs font-medium text-rax-ember">{lowStockMessage}</p>
             ) : null}
           </div>
-          <Button
-            size="sm"
+          <AddToCartButton
+            product={{
+              id: product.id,
+              slug: product.slug,
+              name: product.name,
+              price: product.price,
+              image: product.images[0],
+              wood: product.wood,
+            }}
             disabled={!product.inStock}
-            onClick={() =>
-              addItem({
-                id: product.id,
-                slug: product.slug,
-                name: product.name,
-                price: product.price,
-                image: product.images[0],
-                wood: product.wood,
-              })
-            }
-          >
-            Add
-          </Button>
+          />
         </div>
       </div>
     </article>

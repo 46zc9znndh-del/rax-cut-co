@@ -7,9 +7,11 @@ import type { StorefrontProduct } from "@/types";
 export function FeaturedProducts({
   settings,
   products,
+  lowStockMessage,
 }: {
   settings: FeaturedSectionSettings;
   products: StorefrontProduct[];
+  lowStockMessage: string;
 }) {
 
   return (
@@ -31,7 +33,7 @@ export function FeaturedProducts({
             </Link>
           </div>
         </Reveal>
-        <ProductGrid products={products} />
+        <ProductGrid products={products} lowStockMessage={lowStockMessage} />
       </div>
     </section>
   );

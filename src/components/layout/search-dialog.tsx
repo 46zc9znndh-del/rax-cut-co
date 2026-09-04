@@ -7,23 +7,32 @@ import { Search, X } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useUiStore } from "@/store/cart-store";
-import { filterProducts } from "@/lib/search";
 import { formatCurrency } from "@/lib/utils";
-import type { StorefrontProduct } from "@/types";
+
+type SearchProduct = {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string;
+  price: number;
+  wood: string;
+  image: string;
+  inStock: boolean;
+};
 
 export function SearchDialog() {
   const { searchOpen, closeSearch } = useUiStore();
   const [query, setQuery] = useState("");
-  const [products, setProducts] = useState<StorefrontProduct[]>([]);
+  const [products, setProducts] = useState<SearchProduct[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (!searchOpen || loaded) return;
 
     let cancelled = false;
-    void fetch("/api/cms")
+    void fetch("/api/products")
       .then((response) => response.json())
-      .then((data: { products?: StorefrontProduct[] }) => {
+      .then((data: { products?: SearchProduct[] }) => {
         if (!cancelled) {
           setProducts(data.products ?? []);
           setLoaded(true);
@@ -38,10 +47,15 @@ export function SearchDialog() {
     };
   }, [searchOpen, loaded]);
 
-  const results = useMemo(
-    () => filterProducts(products, query).slice(0, 6),
-    [products, query]
-  );
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return products.slice(0, 6);
+    return products
+      .filter((product) =>
+        [product.name, product.tagline, product.wood].join(" ").toLowerCase().includes(q)
+      )
+      .slice(0, 6);
+  }, [products, query]);
 
   return (
     <Dialog
@@ -78,7 +92,7 @@ export function SearchDialog() {
               >
                 <div className="relative h-14 w-14 overflow-hidden bg-rax-steel">
                   <Image
-                    src={product.images[0]}
+                    src={product.image}
                     alt={product.name}
                     fill
                     className="object-cover"

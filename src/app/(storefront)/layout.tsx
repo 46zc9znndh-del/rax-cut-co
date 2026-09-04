@@ -4,12 +4,12 @@ import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { StorefrontChrome } from "@/components/layout/storefront-chrome";
-import { SitePopup } from "@/components/layout/site-popup";
+import { SitePopupLoader } from "@/components/layout/site-popup-loader";
 import { getCmsData } from "@/lib/cms/store";
 import { organizationSchema, websiteSchema } from "@/lib/seo/json-ld";
 import { StoreSettingsProvider } from "@/lib/store-settings-context";
 
-export const revalidate = 300;
+export const revalidate = 600;
 
 export default async function StorefrontLayout({
   children,
@@ -23,7 +23,7 @@ export default async function StorefrontLayout({
       <Header links={site.nav.links} />
       <main className="flex-1">{children}</main>
       <Footer settings={site.footer} links={site.nav.links} />
-      <SitePopup settings={site.popup} />
+      <SitePopupLoader settings={site.popup} />
       <StorefrontChrome />
     </StoreSettingsProvider>
   );
